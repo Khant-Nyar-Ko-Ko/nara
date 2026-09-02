@@ -1,8 +1,8 @@
-# Nara — CLAUDE.md
+# NaraNews — CLAUDE.md
 
 ## Project
-Nara is <one sentence: who the users are and what problem it solves>.
-Web/mobile app with user accounts, user-generated content (uploads, messages), and paid features. Hosted in Thailand / SEA cloud region.
+NaraNews is a Chrome extension that helps people in Thailand keep up with the news without reading full articles: it pulls headlines from Thai news websites, summarizes each into one line, and shows them as a clickable list (click → jumps to the source article). Delivery adapts to context: a popup while Chrome is open and in use, otherwise a Chrome system notification or an email digest.
+Chrome extension + a lightweight backend (fetch/summarize/dispatch). Hosted in Thailand / SEA cloud region.
 Course: 1305493 SE Case Studies, 1/2569 (Dr. Prasara Jakkaew, ADT MFU).
 Phase: DISCOVER (W1–W5). No production code until BUILD (month 2).
 
@@ -14,8 +14,10 @@ Phase: DISCOVER (W1–W5). No production code until BUILD (month 2).
 - Moe Mya Myintzu (6631503128)
 
 ## Folder layout
-.claude/agents/                         — subagents (requirement-writer, backlog-auditor)
-.claude/skills/<name>/SKILL.md          — skills, invoked with /<name>
+.claude/agents/requirement-writer.md    — drafts specs/backlog from raw pain notes (heavy lifting)
+.claude/agents/backlog-auditor.md       — read-only backlog/spec traceability audit (heavy lifting)
+.claude/skills/capture-requirement/     — /capture-requirement, thin entry point -> requirement-writer
+.claude/skills/audit-backlog/           — /audit-backlog, thin entry point -> backlog-auditor
 .docs/01-requirements/01-spec/{YYYYMMDD}-{no}-{topic}.md — requirement specs
 .docs/01-requirements/backlog.md        — product backlog
 .docs/05-log/{YYYYMMDD}-log.md          — daily log of agent/human changes
@@ -30,4 +32,4 @@ rule.md                                 — legal & compliance rules (PDPA, CCA 
 - Every backlog row lists "Traces to: F#, P#" (or LR#).
 - If anything is unclear, ask and offer at least 3 options. Never guess.
 - When a task matches a skill, call the skill instead of editing files directly.
-- After any change under .claude/ or .docs/, append a line to
+- After any change under .claude/ or .docs/, append a line to .docs/05-log/{YYYYMMDD}-log.md (create it if it doesn't exist).
