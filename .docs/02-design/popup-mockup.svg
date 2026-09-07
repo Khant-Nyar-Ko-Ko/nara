@@ -1,0 +1,52 @@
+<svg viewBox="0 0 360 460" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="360" height="460" fill="#ffffff" stroke="#cccccc" stroke-width="2"/>
+
+  <!-- title bar -->
+  <rect x="0" y="0" width="360" height="48" fill="#1a3c8f"/>
+  <circle cx="28" cy="24" r="12" fill="#ffffff"/>
+  <text x="28" y="29" font-size="14" fill="#1a3c8f" text-anchor="middle" font-weight="bold">N</text>
+  <text x="52" y="30" font-size="18" fill="#ffffff" font-weight="bold">NaraNews</text>
+  <text x="332" y="30" font-size="16" fill="#ffffff" text-anchor="end">⟳</text>
+
+  <!-- headline rows -->
+  <g font-size="13" fill="#111111">
+    <rect x="0" y="48" width="360" height="58" fill="#f7f9fc"/>
+    <text x="16" y="70">รัฐบาลแถลงมาตรการช่วยเหลือน้ำท่วมภาคเหนือ</text>
+    <text x="16" y="90" font-size="11" fill="#888888">Thai PBS · 12 min ago</text>
+
+    <rect x="0" y="106" width="360" height="58" fill="#ffffff"/>
+    <text x="16" y="128">ราคาน้ำมันปรับขึ้นรอบที่สามของเดือน</text>
+    <text x="16" y="148" font-size="11" fill="#888888">Bangkok Post · 34 min ago</text>
+
+    <rect x="0" y="164" width="360" height="58" fill="#f7f9fc"/>
+    <text x="16" y="186">ทีมชาติไทยผ่านเข้ารอบรองชนะเลิศ</text>
+    <text x="16" y="206" font-size="11" fill="#888888">Matichon · 1 hr ago</text>
+
+    <rect x="0" y="222" width="360" height="58" fill="#ffffff"/>
+    <text x="16" y="244">เชียงใหม่เปิดเทศกาลโคมไฟประจำปี</text>
+    <text x="16" y="264" font-size="11" fill="#888888">Chiang Rai Times · 2 hr ago</text>
+
+    <rect x="0" y="280" width="360" height="58" fill="#f7f9fc"/>
+    <text x="16" y="302">ธปท. คงอัตราดอกเบี้ยนโยบายไว้ที่เดิม</text>
+    <text x="16" y="322" font-size="11" fill="#888888">Krungthep Turakij · 3 hr ago</text>
+  </g>
+
+  <!-- scrollbar hint -->
+  <rect x="352" y="52" width="4" height="280" fill="#dddddd" rx="2"/>
+  <rect x="352" y="52" width="4" height="90" fill="#999999" rx="2"/>
+
+  <!-- footer -->
+  <rect x="0" y="412" width="360" height="48" fill="#f0f0f0"/>
+  <text x="16" y="440" font-size="11" fill="#666666">Not in Chrome? Digest also sent to you@example.com</text>
+
+  <!-- click affordance callout -->
+  <path d="M 250 90 L 300 90 L 300 60" stroke="#d1495b" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="250" y="52" font-size="11" fill="#d1495b" text-anchor="middle">click → jumps to</text>
+  <text x="250" y="42" font-size="11" fill="#d1495b" text-anchor="middle">source article (F2)</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#d1495b"/>
+    </marker>
+  </defs>
+</svg>

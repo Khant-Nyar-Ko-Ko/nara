@@ -18,8 +18,10 @@ Phase: DISCOVER (W1–W5). No production code until BUILD (month 2).
 .claude/agents/backlog-auditor.md       — read-only backlog/spec traceability audit (heavy lifting)
 .claude/skills/capture-requirement/     — /capture-requirement, thin entry point -> requirement-writer
 .claude/skills/audit-backlog/           — /audit-backlog, thin entry point -> backlog-auditor
+.docs/00-proposal.md                    — updated proposal (problem statement + target users)
 .docs/01-requirements/01-spec/{YYYYMMDD}-{no}-{topic}.md — requirement specs
 .docs/01-requirements/backlog.md        — product backlog
+.docs/02-design/                        — design draft: feature-list, user-journey, prototype, diagrams/ (4 diagrams)
 .docs/05-log/{YYYYMMDD}-log.md          — daily log of agent/human changes
 rule.md                                 — legal & compliance rules (PDPA, CCA §26, ETA §9/26/28)
 
