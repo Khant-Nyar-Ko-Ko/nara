@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "NaraNews",
+  "version": "0.0.1",
+  "description": "One-line Thai news digest — popup, Chrome notification, or email, depending on context.",
+  "action": {
+    "default_popup": "src/popup/index.html"
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.ts",
+    "type": "module"
+  },
+  "options_page": "src/options/index.html",
+  "permissions": ["storage", "alarms", "notifications"],
+  "host_permissions": [],
+  "icons": {
+    "16": "public/icons/icon-16.png",
+    "48": "public/icons/icon-48.png",
+    "128": "public/icons/icon-128.png"
+  }
+}

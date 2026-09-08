@@ -1,0 +1,21 @@
+{
+  "name": "naranews-web",
+  "private": true,
+  "version": "0.0.1",
+  "description": "NaraNews full-stack backend (Next.js only — fetch/summarize/dispatch). Template only, no implementation yet.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.0",
+    "typescript": "^5.5.0"
+  }
+}

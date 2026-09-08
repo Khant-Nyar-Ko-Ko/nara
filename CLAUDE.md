@@ -24,6 +24,8 @@ Phase: DISCOVER (W1–W5). No production code until BUILD (month 2).
 .docs/02-design/                        — design draft: feature-list, user-journey, prototype, diagrams/ (4 diagrams)
 .docs/05-log/{YYYYMMDD}-log.md          — daily log of agent/human changes
 rule.md                                 — legal & compliance rules (PDPA, CCA §26, ETA §9/26/28)
+extension/                              — Chrome extension (Manifest V3, Vite+React). BUILD-phase scaffold only — every file is an empty TODO stub, no logic yet.
+web/                                    — Next.js full-stack backend (fetch/summarize/dispatch). Same: scaffold only, no logic yet.
 
 ## Rules that always apply
 - Read rule.md before touching anything involving personal data, logs, consent, or signatures. Never disable or "temporarily skip" a rule in it.
