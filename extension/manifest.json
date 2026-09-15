@@ -12,7 +12,7 @@
   },
   "options_page": "src/options/index.html",
   "permissions": ["storage", "alarms", "notifications"],
-  "host_permissions": [],
+  "host_permissions": ["http://localhost:3000/*"],
   "icons": {
     "16": "public/icons/icon-16.png",
     "48": "public/icons/icon-48.png",

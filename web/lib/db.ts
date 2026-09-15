@@ -5,7 +5,7 @@
 import { Pool, type PoolClient, type QueryResultRow } from "pg";
 
 function isLocalDb(connectionString: string): boolean {
-  return /\/\/(localhost|127\.0\.0\.1)([:/]|$)/.test(connectionString);
+  return /\/\/([^@/]+@)?(localhost|127\.0\.0\.1)([:/]|$)/.test(connectionString);
 }
 
 function createPool(envVar: string): Pool {
