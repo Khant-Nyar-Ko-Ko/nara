@@ -4,7 +4,7 @@
 NaraNews is a Chrome extension that helps people in Thailand keep up with the news without reading full articles: it pulls headlines from Thai news websites, summarizes each into one line, and shows them as a clickable list (click → jumps to the source article). Delivery adapts to context: a popup while Chrome is open and in use, otherwise a Chrome system notification or an email digest.
 Chrome extension + a lightweight backend (fetch/summarize/dispatch). Hosted in Thailand / SEA cloud region.
 Course: 1305493 SE Case Studies, 1/2569 (Dr. Prasara Jakkaew, ADT MFU).
-Phase: DISCOVER (W1–W5). No production code until BUILD (month 2).
+Phase: BUILD (month 2+). DISCOVER (W1–W5) is complete; requirement specs and backlog remain the source of truth for what to build.
 
 ## Team
 - Khant Nyar Ko Ko (6631503061)
@@ -24,8 +24,8 @@ Phase: DISCOVER (W1–W5). No production code until BUILD (month 2).
 .docs/02-design/                        — design draft: feature-list, user-journey, prototype, diagrams/ (4 diagrams)
 .docs/05-log/{YYYYMMDD}-log.md          — daily log of agent/human changes
 rule.md                                 — legal & compliance rules (PDPA, CCA §26, ETA §9/26/28)
-extension/                              — Chrome extension (Manifest V3, Vite+React). BUILD-phase scaffold only — every file is an empty TODO stub, no logic yet.
-web/                                    — Next.js full-stack backend (fetch/summarize/dispatch). Same: scaffold only, no logic yet.
+extension/                              — Chrome extension (Manifest V3, Vite+React). BUILD-phase scaffold — files are TODO stubs until implemented.
+web/                                    — Next.js full-stack backend (fetch/summarize/dispatch). BUILD-phase: cross-cutting infra (db.ts, logging.ts, middleware.ts) implemented; route handlers remain TODO stubs until implemented.
 
 ## Rules that always apply
 - Read rule.md before touching anything involving personal data, logs, consent, or signatures. Never disable or "temporarily skip" a rule in it.

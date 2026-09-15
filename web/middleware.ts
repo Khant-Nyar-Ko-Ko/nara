@@ -1,11 +1,16 @@
-// Template only — no implementation yet.
-// TODO(LR2): every HTTP entry point must log timestamp (UTC), source IP,
-//   route/method, status code, bytes, user_id/session_id (if authenticated),
-//   and user-agent, retained >=90 days, append-only (no delete permission
-//   on the log store), tamper-evident (rule.md CCA §26).
+// Tags each API request with a correlation id, for matching this app's
+// access_log rows (lib/logging.ts) with any CDN/proxy logs in front of it.
+// The access_log write itself happens in withAccessLog, not here — Next.js
+// middleware never sees a route handler's final response/status.
 
-export function middleware() {
-  // no-op — see TODO above
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(req: NextRequest) {
+  const requestId = crypto.randomUUID();
+  const headers = new Headers(req.headers);
+  headers.set("x-nara-request-id", requestId);
+  return NextResponse.next({ request: { headers } });
 }
 
 export const config = {
