@@ -1,8 +1,19 @@
-// Template only — no implementation yet.
-// TODO(F2): serve the current one-line-summarized digest to the extension
-//   popup (GET) — this is what extension/src/lib/api.ts calls.
-// TODO(LR2): log this HTTP entry point per rule.md CCA §26 (see headlines/route.ts note).
+// F2: combine the F1 fetch (lib/headlines.ts) with a one-line summary per
+// headline (lib/summarize.ts) — this is what the extension popup renders.
 
-export async function GET() {
-  return Response.json({ error: "not implemented" }, { status: 501 });
-}
+import { withAccessLog } from "@/lib/logging";
+import { fetchAllHeadlines } from "@/lib/headlines";
+import { summarize } from "@/lib/summarize";
+
+export const GET = withAccessLog(async function GET() {
+  const headlines = await fetchAllHeadlines();
+  const fetchedAt = new Date().toISOString();
+  const digest = headlines.map((headline) => ({
+    id: headline.id,
+    source: headline.source,
+    summary: summarize(headline),
+    url: headline.url,
+    fetchedAt,
+  }));
+  return Response.json({ headlines: digest });
+});
