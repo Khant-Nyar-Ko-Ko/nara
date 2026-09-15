@@ -1,7 +1,7 @@
 {
   "name": "naranews",
   "private": true,
-  "description": "NaraNews monorepo — Chrome extension (extension/) + Next.js full-stack backend (web/). BUILD-phase scaffold only, no implementation yet — see CLAUDE.md.",
+  "description": "NaraNews monorepo — Chrome extension (extension/) + Next.js full-stack backend (web/). BUILD phase — see CLAUDE.md for what's implemented vs. still a TODO stub.",
   "workspaces": [
     "extension",
     "web"
