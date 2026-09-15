@@ -6,6 +6,7 @@
 import { createHash } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { query } from "./db";
+import { resolveSession } from "./auth";
 
 export interface AccessLogEntry {
   ts: string; // UTC ISO-8601
@@ -54,16 +55,16 @@ export async function logAccess(entry: AccessLogEntry): Promise<void> {
   );
 }
 
-function requestIp(req: NextRequest): string {
+export function requestIp(req: NextRequest): string {
   const forwarded = req.headers.get("x-forwarded-for");
   return forwarded?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
 }
 
-// Anonymous (no userId) until auth lands — still logged, since CCA §26
-// traffic logging applies regardless of auth state.
+// Anonymous (null userId) whenever there's no valid session — still
+// logged, since CCA §26 traffic logging applies regardless of auth state.
 function requestIdentity(req: NextRequest): { userId: string | null; sessionId: string | null } {
-  const sessionId = req.cookies.get("nara_session")?.value ?? null;
-  return { userId: null, sessionId };
+  const session = resolveSession(req);
+  return { userId: session?.userId ?? null, sessionId: session?.sessionId ?? null };
 }
 
 type RouteHandler = (req: NextRequest, ctx: unknown) => Promise<Response> | Response;
