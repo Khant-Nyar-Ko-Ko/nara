@@ -1,0 +1,23 @@
+{
+  "name": "naranews-crawler",
+  "private": true,
+  "version": "0.0.1",
+  "description": "NaraNews Apify crawler for Facebook news sources.",
+  "type": "module",
+  "scripts": {
+    "crawl:manual": "tsx src/manualCrawl.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.109.0",
+    "apify-client": "^2.12.0",
+    "dotenv": "^16.4.0",
+    "ws": "^8.21.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}

@@ -4,6 +4,7 @@
   "description": "NaraNews monorepo — Chrome extension (extension/) + Next.js full-stack backend (web/). BUILD phase — see CLAUDE.md for what's implemented vs. still a TODO stub.",
   "workspaces": [
     "extension",
-    "web"
+    "web",
+    "crawler"
   ]
 }
