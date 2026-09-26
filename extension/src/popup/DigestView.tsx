@@ -22,7 +22,7 @@ export function DigestView({ headlines, isDemoData, onResetSetup }: DigestViewPr
         {headlines.map((headline) => <HeadlineItem key={headline.id} headline={headline} />)}
       </section>
       <footer className="popup-footer">
-        <span>5 Thai sources · email fallback on</span>
+        <span>{headlines.length} headlines</span>
         <button type="button" onClick={onResetSetup}>Edit topics</button>
       </footer>
     </main>

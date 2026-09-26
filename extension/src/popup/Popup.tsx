@@ -27,7 +27,8 @@ export function Popup() {
   const [setupPage, setSetupPage] = useState<SetupPage | null>(null);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(DEFAULT_TOPICS);
   const [digestTimes, setDigestTimes] = useState<string[]>(DEFAULT_DIGEST_TIMES);
-  const [emailFallback, setEmailFallback] = useState(true);
+  // LR4 / rule.md PDPA: opt-in, unchecked by default. Real consent is recorded on the options page.
+  const [emailFallback, setEmailFallback] = useState(false);
   const [notifyWhenIdle, setNotifyWhenIdle] = useState(true);
   const [quietHours, setQuietHours] = useState(true);
 
@@ -61,10 +62,14 @@ export function Popup() {
         void writeCachedDigest(fresh);
       } catch (err) {
         console.error("naranews: popup digest fetch failed", err);
-        if (!cancelled && !cached) {
+        if (cancelled || cached) return;
+        // Invented headlines must never reach real users.
+        if (import.meta.env.DEV) {
           setHeadlines(MOCK_HEADLINES);
           setIsDemoData(true);
           setStatus("ready");
+        } else {
+          setStatus("error");
         }
       }
     })();
@@ -96,6 +101,9 @@ export function Popup() {
       [TOPICS_KEY]: selectedTopics,
       [DIGEST_TIMES_KEY]: digestTimes,
     });
+    if (emailFallback) {
+      await chrome.runtime.openOptionsPage();
+    }
     window.location.reload();
   }
 
