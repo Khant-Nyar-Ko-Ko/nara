@@ -7,8 +7,7 @@ import type { NextRequest } from "next/server";
 import { withAccessLog } from "@/lib/logging";
 import { resolveSession, isEmailVerified, hasActiveConsent, EMAIL_FALLBACK_CONSENT_PURPOSE } from "@/lib/auth";
 import { query } from "@/lib/db";
-import { fetchAllHeadlines } from "@/lib/headlines";
-import { summarize } from "@/lib/summarize";
+import { readDigest } from "@/lib/news";
 
 const RESEND_API_URL = "https://api.resend.com/emails";
 
@@ -32,7 +31,7 @@ function escapeHtml(input: string): string {
 
 function renderDigestHtml(items: { summary: string; url: string; source: string }[]): string {
   const rows = items
-    .map((item) => `<li><a href="${item.url}">${escapeHtml(item.summary)}</a> — <small>${escapeHtml(item.source)}</small></li>`)
+    .map((item) => `<li><a href="${escapeHtml(item.url)}">${escapeHtml(item.summary)}</a> — <small>${escapeHtml(item.source)}</small></li>`)
     .join("");
   return `<h1>Your NaraNews digest</h1><ul>${rows}</ul>`;
 }
@@ -54,8 +53,8 @@ export const POST = withAccessLog(async function POST(req: NextRequest) {
     return Response.json({ error: "no email on file" }, { status: 409 });
   }
 
-  const headlines = await fetchAllHeadlines();
-  const items = headlines.map((h) => ({ summary: summarize(h), url: h.url, source: h.source }));
+  // No stored language preference yet, so the email uses the digest default (th).
+  const items = await readDigest("th");
 
   try {
     await sendEmail(contact.email, "Your NaraNews digest", renderDigestHtml(items));
