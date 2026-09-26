@@ -124,6 +124,11 @@ export async function ensureSchema(): Promise<void> {
   await query(USER_CONTACTS_TABLE);
   await query(ACCESS_LOG_TABLE);
   await query(CONSENT_LOG_TABLE);
+  // Supabase exposes `public` tables via its REST API to anyone with the public
+  // key. RLS with no policies closes that; the owning role and service role bypass it.
+  for (const table of ["users", "user_contacts", "access_log", "consent_log"]) {
+    await query(`ALTER TABLE ${table} ENABLE ROW LEVEL SECURITY;`);
+  }
 }
 
 // --- Retention / anonymisation job ---------------------------------------
