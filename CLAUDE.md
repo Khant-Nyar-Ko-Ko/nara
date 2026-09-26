@@ -2,7 +2,7 @@
 
 ## Project
 NaraNews is a Chrome extension that helps people in Thailand keep up with the news without reading full articles: it pulls headlines from Thai news websites, summarizes each into one line, and shows them as a clickable list (click → jumps to the source article). Delivery adapts to context: a popup while Chrome is open and in use, otherwise a Chrome system notification or an email digest.
-Chrome extension + a lightweight backend (fetch/summarize/dispatch). Hosted in Thailand / SEA cloud region.
+Chrome extension + a lightweight backend (fetch/summarize/dispatch). Hosted on Supabase, Seoul (ap-northeast-2) — temporary, decided 2026-09-26. Personal data processed there must be listed in the privacy notice (rule.md PDPA cross-border). Revisit before any real user data is stored.
 Course: 1305493 SE Case Studies, 1/2569 (Dr. Prasara Jakkaew, ADT MFU).
 Phase: BUILD (month 2+). DISCOVER (W1–W5) is complete; requirement specs and backlog remain the source of truth for what to build.
 
