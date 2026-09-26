@@ -12,10 +12,6 @@ export interface GroqConfig {
   model: string;
 }
 
-export interface CrawlStateConfig {
-  stateFile: string;
-}
-
 export interface SupabaseConfig {
   url: string;
   serviceRoleKey: string;
@@ -58,12 +54,6 @@ export function getGroqConfig(): GroqConfig {
   return {
     apiKey: requiredEnv("GROQ_API_KEY"),
     model: process.env.GROQ_MODEL ?? "openai/gpt-oss-20b",
-  };
-}
-
-export function getCrawlStateConfig(): CrawlStateConfig {
-  return {
-    stateFile: process.env.CRAWLER_STATE_FILE ?? "crawler/.crawl-state.json",
   };
 }
 

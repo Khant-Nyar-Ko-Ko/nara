@@ -26,16 +26,20 @@ The manual news crawl uses `APIFY_FACEBOOK_POSTS_ACTOR_ID=apify/facebook-posts-s
 npm run crawl:manual --workspace crawler
 ```
 
-One manual run crawls one latest post from each source in `src/sources.ts`, filters out posts at or before the last crawled time, dedupes posts by normalized URL, asks Groq to summarize each remaining post, inserts the result into Supabase table `news`, and prints a JSON array with `source`, `sources`, `content`, `url`, `created_at`, `headline_en`, `headline_th`, and `headline_mm`.
+Before the first crawl, run [`sql/001_news_url_category.sql`](sql/001_news_url_category.sql) once in the Supabase SQL editor. It adds `url` (unique) and `category` to `news`.
 
-Supabase insert mapping for the current `news` schema:
+One manual run crawls one latest post from each source in `src/sources.ts`, dedupes posts by normalized URL, skips any URL already in `news`, asks Groq for headlines plus a category for each remaining post, inserts the result into Supabase table `news`, and prints a JSON array with `source`, `sources`, `content`, `url`, `created_at`, `headline_en`, `headline_th`, `headline_mm`, and `category`.
+
+If Groq fails for a post, only that post is skipped; it isn't stored, so the next run retries it.
+
+Supabase insert mapping for the `news` schema:
 
 - `headline_en` -> `headline_en`
 - `headline_th` -> `headline_th`
 - `headline_mm` -> `headline_mm`
+- `category` -> `category` (one of `NEWS_CATEGORIES` in `src/types.ts`, matching the popup's topic list)
 - `content` -> `content`
+- normalized post `url` -> `url` (unique; duplicates are ignored)
 - post `created_at` -> `date`
 - `source` -> `source`
 - table `created_at` is left to its default `now()`
-
-The newest returned `created_at` is stored in `crawler/.crawl-state.json` by default. Set `CRAWLER_STATE_FILE` to override that path.

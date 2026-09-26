@@ -41,7 +41,7 @@ export function DeliverySetup({
           ))}
         </div>
         <p className="quick-add">Quick add: <button type="button" onClick={() => onAddTime("12:30")}>+12:30</button> <button type="button" onClick={() => onAddTime("21:30")}>+21:30</button></p>
-        <ToggleRow label="Email when away from Chrome" detail="Verified address only, consent on record" checked={emailFallback} onChange={onEmailFallbackChange} />
+        <ToggleRow label="Email when away from Chrome" detail="You'll confirm your address and consent in Settings" checked={emailFallback} onChange={onEmailFallbackChange} />
         <ToggleRow label="Notify when Chrome is idle" detail="One notification for the newest headline" checked={notifyWhenIdle} onChange={onNotifyWhenIdleChange} />
         <ToggleRow label="Quiet hours 22:00 – 06:30" detail="Nothing is delivered overnight" checked={quietHours} onChange={onQuietHoursChange} />
         <button className="primary-button" type="button" onClick={onSave}>Save and open my digest <span aria-hidden="true">›</span></button>

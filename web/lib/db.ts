@@ -8,6 +8,12 @@ function isLocalDb(connectionString: string): boolean {
   return /\/\/([^@/]+@)?(localhost|127\.0\.0\.1)([:/]|$)/.test(connectionString);
 }
 
+// Supabase signs its Postgres certs with its own CA, which Node doesn't trust
+// by default. Hosting dashboards often store multi-line values with literal "\n".
+function databaseCaCert(): string | undefined {
+  return process.env.DATABASE_CA_CERT?.replace(/\\n/g, "\n") || undefined;
+}
+
 function createPool(envVar: string): Pool {
   const connectionString = process.env[envVar];
   if (!connectionString) {
@@ -15,7 +21,7 @@ function createPool(envVar: string): Pool {
   }
   return new Pool({
     connectionString,
-    ssl: isLocalDb(connectionString) ? undefined : { rejectUnauthorized: true },
+    ssl: isLocalDb(connectionString) ? undefined : { rejectUnauthorized: true, ca: databaseCaCert() },
   });
 }
 

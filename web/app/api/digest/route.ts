@@ -1,19 +1,19 @@
-// F2: combine the F1 fetch (lib/headlines.ts) with a one-line summary per
-// headline (lib/summarize.ts) — this is what the extension popup renders.
+// F2: one-line headlines for the extension popup, read from the crawler's
+// `news` table. ?lang=th|en|mm picks the headline language (default th).
+// fetchedAt carries the article's publish time so the popup's "Xm ago" is real.
 
+import type { NextRequest } from "next/server";
 import { withAccessLog } from "@/lib/logging";
-import { fetchAllHeadlines } from "@/lib/headlines";
-import { summarize } from "@/lib/summarize";
+import { DIGEST_LANGS, parseLang, readDigest } from "@/lib/news";
 
-export const GET = withAccessLog(async function GET() {
-  const headlines = await fetchAllHeadlines();
-  const fetchedAt = new Date().toISOString();
-  const digest = headlines.map((headline) => ({
-    id: headline.id,
-    source: headline.source,
-    summary: summarize(headline),
-    url: headline.url,
-    fetchedAt,
-  }));
-  return Response.json({ headlines: digest });
+export const dynamic = "force-dynamic";
+
+export const GET = withAccessLog(async function GET(req: NextRequest) {
+  const lang = parseLang(req.nextUrl.searchParams.get("lang"));
+  if (!lang) {
+    return Response.json({ error: `lang must be one of ${DIGEST_LANGS.join(", ")}` }, { status: 400 });
+  }
+
+  const headlines = await readDigest(lang);
+  return Response.json({ headlines });
 });
