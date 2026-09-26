@@ -3,6 +3,7 @@
 export interface Headline {
   id: string;
   source: string;
+  category?: string;
   summary: string; // one-line summary, F2
   url: string; // source article, F2 click target
   fetchedAt: string;
