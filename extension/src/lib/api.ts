@@ -62,6 +62,15 @@ export async function verifySignInCode(email: string, code: string): Promise<Ses
   return session;
 }
 
+// F3: the server checks sign-in, verified email (LR3), consent (LR4) and its cooldown.
+export async function dispatchEmailDigest(session: Session): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/api/dispatch/email`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${session.token}` },
+  });
+  if (!res.ok) throw await errorFrom(res);
+}
+
 export interface ConsentRequest {
   email: string | null;
   documentVersionHash: string;

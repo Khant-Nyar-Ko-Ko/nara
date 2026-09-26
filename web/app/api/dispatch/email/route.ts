@@ -17,10 +17,26 @@ function renderDigestHtml(items: { summary: string; url: string; source: string 
   return `<h1>Your NaraNews digest</h1><ul>${rows}</ul>`;
 }
 
+const DISPATCH_COOLDOWN_MINUTES = 10;
+
+// The extension calls this on every idle transition; one digest per cooldown is enough.
+async function sentRecently(userId: string): Promise<boolean> {
+  const [row] = await query<{ n: number }>(
+    `SELECT count(*)::int AS n FROM access_log
+     WHERE user_id = $1 AND route = '/api/dispatch/email' AND status = 200
+       AND ts > now() - ($2 || ' minutes')::interval`,
+    [userId, DISPATCH_COOLDOWN_MINUTES],
+  );
+  return row.n > 0;
+}
+
 export const POST = withAccessLog(async function POST(req: NextRequest) {
   const session = resolveSession(req);
   if (!session) {
     return Response.json({ error: "authentication required" }, { status: 401 });
+  }
+  if (await sentRecently(session.userId)) {
+    return Response.json({ error: `a digest was sent in the last ${DISPATCH_COOLDOWN_MINUTES} minutes` }, { status: 429 });
   }
   if (!(await isEmailVerified(session.userId))) {
     return Response.json({ error: "email not verified" }, { status: 403 });
