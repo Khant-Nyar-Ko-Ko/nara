@@ -38,7 +38,7 @@ function DigestHeader({ onResetSetup }: { onResetSetup: () => void }) {
         <p>Thai headline digest</p>
       </div>
       <button className="icon-button" type="button" aria-label="Reset setup" title="Reset setup" onClick={onResetSetup}>↻</button>
-      <a className="icon-button" href="options/index.html" aria-label="Open settings" title="Open settings">⚙</a>
+      <button className="icon-button" type="button" aria-label="Open settings" title="Open settings" onClick={() => void chrome.runtime.openOptionsPage()}>⚙</button>
     </header>
   );
 }
