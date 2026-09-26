@@ -6,4 +6,3 @@ dist/
 *.log
 .DS_Store
 *.tsbuildinfo
-crawler/.crawl-state.json
