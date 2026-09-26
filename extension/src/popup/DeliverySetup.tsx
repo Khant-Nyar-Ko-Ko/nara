@@ -3,11 +3,7 @@ import { useState } from "react";
 interface DeliverySetupProps {
   digestTimes: string[];
   emailFallback: boolean;
-  notifyWhenIdle: boolean;
-  quietHours: boolean;
   onEmailFallbackChange: (value: boolean) => void;
-  onNotifyWhenIdleChange: (value: boolean) => void;
-  onQuietHoursChange: (value: boolean) => void;
   onAddTime: (time: string) => void;
   onRemoveTime: (time: string) => void;
   onBack: () => void;
@@ -17,11 +13,7 @@ interface DeliverySetupProps {
 export function DeliverySetup({
   digestTimes,
   emailFallback,
-  notifyWhenIdle,
-  quietHours,
   onEmailFallbackChange,
-  onNotifyWhenIdleChange,
-  onQuietHoursChange,
   onAddTime,
   onRemoveTime,
   onBack,
@@ -42,8 +34,8 @@ export function DeliverySetup({
         </div>
         <p className="quick-add">Quick add: <button type="button" onClick={() => onAddTime("12:30")}>+12:30</button> <button type="button" onClick={() => onAddTime("21:30")}>+21:30</button></p>
         <ToggleRow label="Email when away from Chrome" detail="You'll confirm your address and consent in Settings" checked={emailFallback} onChange={onEmailFallbackChange} />
-        <ToggleRow label="Notify when Chrome is idle" detail="One notification for the newest headline" checked={notifyWhenIdle} onChange={onNotifyWhenIdleChange} />
-        <ToggleRow label="Quiet hours 22:00 – 06:30" detail="Nothing is delivered overnight" checked={quietHours} onChange={onQuietHoursChange} />
+        <ComingSoonRow label="Notify when Chrome is idle" detail="One notification for the newest headline" />
+        <ComingSoonRow label="Quiet hours 22:00 – 06:30" detail="Nothing is delivered overnight" />
         <button className="primary-button" type="button" onClick={onSave}>Save and open my digest <span aria-hidden="true">›</span></button>
       </section>
       <ProgressIndicator page={2} />
@@ -76,6 +68,11 @@ function SetupHeader({ onBack }: { onBack: () => void }) {
 
 function ToggleRow({ label, detail, checked, onChange }: { label: string; detail: string; checked: boolean; onChange: (value: boolean) => void }) {
   return <label className="toggle-row"><span><strong>{label}</strong><small>{detail}</small></span><input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} /><i aria-hidden="true" /></label>;
+}
+
+// Shown but not wired up yet (F5 is a Should, outside the current Must-only scope).
+function ComingSoonRow({ label, detail }: { label: string; detail: string }) {
+  return <div className="toggle-row coming-soon" aria-disabled="true"><span><strong>{label}</strong><small>{detail}</small></span><em className="soon-badge">Coming soon</em></div>;
 }
 
 function ProgressIndicator({ page }: { page: 1 | 2 }) {

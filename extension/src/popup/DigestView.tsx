@@ -2,24 +2,29 @@ import type { Headline } from "../types";
 
 interface DigestViewProps {
   headlines: Headline[];
+  topics: string[];
   isDemoData: boolean;
   onResetSetup: () => void;
 }
 
-export function DigestView({ headlines, isDemoData, onResetSetup }: DigestViewProps) {
+// Headlines in the reader's topics first, everything else after (as TopicSetup promises).
+// Array.prototype.sort is stable, so each group keeps the API's newest-first order.
+function prioritize(headlines: Headline[], topics: string[]): Headline[] {
+  const isPriority = (headline: Headline) => (headline.category ? topics.includes(headline.category) : false);
+  return [...headlines].sort((a, b) => Number(isPriority(b)) - Number(isPriority(a)));
+}
+
+export function DigestView({ headlines, topics, isDemoData, onResetSetup }: DigestViewProps) {
   return (
     <main className="popup-shell">
       <DigestHeader onResetSetup={onResetSetup} />
       <div className="digest-toolbar">
         <span className="toolbar-label">Priority</span>
-        <span className="topic-chip">Politics</span>
-        <span className="topic-chip">Economy</span>
-        <span className="topic-chip">Bangkok</span>
-        <span className="topic-chip">Weather</span>
+        {topics.map((topic) => <span className="topic-chip" key={topic}>{topic}</span>)}
       </div>
       {isDemoData && <p className="demo-note">Preview digest · connect the backend for live headlines</p>}
       <section className="digest-list" aria-label="Latest headlines">
-        {headlines.map((headline) => <HeadlineItem key={headline.id} headline={headline} />)}
+        {prioritize(headlines, topics).map((headline) => <HeadlineItem key={headline.id} headline={headline} />)}
       </section>
       <footer className="popup-footer">
         <span>{headlines.length} headlines</span>

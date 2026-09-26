@@ -109,6 +109,9 @@ button, a { font: inherit; }
 .toggle-row input:checked + i { background: linear-gradient(100deg, #ea1e23, #fb5b1d); }
 .toggle-row input:checked + i::after { transform: translateX(19px); }
 .toggle-row input:focus-visible + i { outline: 2px solid #17243a; outline-offset: 2px; }
+.toggle-row.coming-soon { cursor: default; background: #f8f9fb; }
+.toggle-row.coming-soon strong, .toggle-row.coming-soon small { opacity: .6; }
+.soon-badge { flex: 0 0 auto; margin-left: auto; padding: 4px 8px; color: #52627b; border-radius: 12px; background: #e3e7ed; font: 700 10px Arial, sans-serif; font-style: normal; letter-spacing: .4px; text-transform: uppercase; }
 
 @media (max-width: 380px) {
   body { min-width: 320px; }
