@@ -1,47 +1,63 @@
-// Minimal session primitive: a stateless, HMAC-signed cookie mapping a
-// request to a user_id. No login/signup flow exists yet (not in scope
-// here) — `createSessionCookie` is the pair a future one would call;
-// until then `resolveSession` correctly returns null for every request,
-// which is the right default per rule.md CCA §26 ("no anonymous guest
-// write access") rather than a bypass.
+// Stateless session tokens: `<userId>.<expiresAtSeconds>.<hmac>`, sent by the
+// extension as `Authorization: Bearer <token>`. Issued only by
+// /api/auth/verify-code after the email is verified (rule.md CCA §26 / LR3:
+// every session maps to a verified identity). No token → null session, which
+// the gated routes treat as "authentication required".
 
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { query } from "./db";
-
-export const SESSION_COOKIE = "nara_session";
 
 // consent_log purpose for F3's ToS/Privacy-Policy consent (LR4), shared by
 // /api/consent (writer) and /api/dispatch/email (reader, via hasActiveConsent).
 export const EMAIL_FALLBACK_CONSENT_PURPOSE = "email_fallback_tos";
 
-function sign(userId: string): string {
+const SESSION_TTL_SECONDS = 30 * 24 * 60 * 60;
+
+export function sessionSecret(): string {
   const secret = process.env.SESSION_SECRET;
   if (!secret) throw new Error("SESSION_SECRET is not set");
-  return createHmac("sha256", secret).update(userId).digest("base64url");
+  return secret;
 }
 
-export function createSessionCookie(userId: string): string {
-  return `${userId}.${sign(userId)}`;
+function sign(payload: string): string {
+  return createHmac("sha256", sessionSecret()).update(payload).digest("base64url");
+}
+
+export function createSessionToken(userId: string): { token: string; expiresAt: string } {
+  const expiresAtSeconds = Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS;
+  const payload = `${userId}.${expiresAtSeconds}`;
+  return {
+    token: `${payload}.${sign(payload)}`,
+    expiresAt: new Date(expiresAtSeconds * 1000).toISOString(),
+  };
 }
 
 export interface AuthedSession {
   userId: string;
+  // Hash of the token, safe to log (rule.md CCA §26: never log tokens).
   sessionId: string;
 }
 
+function bearerToken(req: NextRequest): string | null {
+  const header = req.headers.get("authorization");
+  const match = header?.match(/^Bearer\s+(\S+)$/i);
+  return match?.[1] ?? null;
+}
+
 export function resolveSession(req: NextRequest): AuthedSession | null {
-  const raw = req.cookies.get(SESSION_COOKIE)?.value;
-  if (!raw) return null;
+  const token = bearerToken(req);
+  if (!token) return null;
 
-  const [userId, signature] = raw.split(".");
-  if (!userId || !signature) return null;
+  const [userId, expiresAtSeconds, signature] = token.split(".");
+  if (!userId || !expiresAtSeconds || !signature) return null;
 
-  const expected = Buffer.from(sign(userId));
+  const expected = Buffer.from(sign(`${userId}.${expiresAtSeconds}`));
   const actual = Buffer.from(signature);
   if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) return null;
+  if (Number(expiresAtSeconds) * 1000 <= Date.now()) return null;
 
-  return { userId, sessionId: raw };
+  return { userId, sessionId: createHash("sha256").update(token).digest("hex").slice(0, 32) };
 }
 
 // LR3: the email-fallback channel may only dispatch to a verified address.
