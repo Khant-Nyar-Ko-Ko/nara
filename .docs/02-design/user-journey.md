@@ -1,49 +1,15 @@
-# NaraNews — User Journey (W5 Design Draft)
+# NaraNews — User Journey
 
-Three journeys for the same reader, branching on Chrome state. All start from the same backend fetch cycle (F1)
-and share the same summarized digest content (F2); only the delivery channel differs.
+**Task:** catch up on today's Thai news, phone in hand, away from the computer.
+**Before this starts:** the reader has already signed up once on their laptop (typed their email, entered the 6-digit code they got, ticked "I agree").
 
-## Journey A — Reader is actively using Chrome
+1. My phone buzzes. An email from NaraNews arrives: "Today's Thai news."
+2. I open it and see a short list, one line per story, from several Thai news sites in one place.
+3. I scroll with my thumb and read only the one-liners. No full articles yet.
+4. One headline catches my eye, so I tap it.
+5. The full story opens on the news site. I read it, go back to the list or close it, and I'm caught up in a few minutes.
 
-```mermaid
-flowchart TD
-    A[Reader opens Chrome, browsing as usual] --> B[Backend has fetched + summarized\nnew headlines - F1]
-    B --> C[Extension icon shows an unread digest]
-    C --> D[Reader clicks the NaraNews icon]
-    D --> E[Popup shows scrollable one-line\nheadline list - F2]
-    E --> F{Headline looks\nrelevant?}
-    F -->|Yes| G[Click headline -> jumps to\nfull source article]
-    F -->|No, keep scanning| E
-```
+*At my desk instead?* I click the NaraNews icon in Chrome and see the same one-line list. Steps 3–5 are the same.
 
-## Journey B — Reader is not currently in Chrome
-
-```mermaid
-flowchart TD
-    A2[Backend has fetched + summarized\nnew headlines - F1] --> B2{Is the reader\nactive in Chrome?}
-    B2 -->|No| C2[Digest dispatched by email - F3]
-    C2 --> D2[LR3: dispatch only to a\nverified identity]
-    D2 --> E2[Reader opens email later]
-    E2 --> F2[Reader clicks a headline in\nthe email -> jumps to source article]
-```
-
-## Journey C — Reader has Chrome open but is idle [F5, Should]
-
-```mermaid
-flowchart TD
-    A3[Backend has fetched + summarized\nnew headlines - F1] --> B3{Reader active\nin Chrome?}
-    B3 -->|Open, idle - no interaction\nfor N min| C3[Chrome system notification\nfired - F5]
-    C3 --> D3[LR5: only if reader has set\na notification preference on file]
-    D3 --> E3[Reader clicks notification]
-    E3 --> F3[Popup opens directly to that\nheadline -> jumps to source article]
-```
-
-## Notes
-- All three journeys converge at "click headline -> source article" — the actual reading experience is identical,
-  only the notice mechanism differs.
-- LR1/LR4 (purpose-limited use + recorded consent for the email address) gate whether Journey B is even reachable
-  for a given reader: no verified, consented email on file → that reader can only ever experience Journey A (and,
-  once built, Journey C).
-- Journey C is sourced to survey data (P4: 3/7 want Chrome notification when idle, 3/7 want email, 1/7 want
-  neither) — see [00-proposal.md](../00-proposal.md). It's Should, not Must, and survey-supported rather than
-  interview-validated — treat this journey as provisional until the required live interviews confirm it.
+---
+Traces to (for audit, not part of the story): steps 1–2 → F1, F3, P1, P2 · steps 2–5 → F2, P3 · sign-up → LR1, LR3, LR4. Source: [feature-list.md](feature-list.md), [spec §5 core workflow](../01-requirements/01-spec/20260902-01-news-digest.md).
