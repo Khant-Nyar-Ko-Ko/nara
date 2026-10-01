@@ -1,0 +1,57 @@
+/* Component rules from ../design-system.md. Uses ONLY var(--token) — no literal colours. Mobile-first. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--surface-page); color: var(--ink-800); font-family: var(--font-serif); }
+button, input, a { font: inherit; }
+:focus-visible { outline: 2px solid var(--ink-700); outline-offset: 2px; }
+
+.screen { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--surface-card); }
+.proto-note { max-width: 480px; margin: 0 auto; padding: var(--space-2) var(--space-6); color: var(--slate-600); background: var(--surface-band); font: 11px var(--font-sans); }
+
+/* AppHeader */
+.app-header { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-5) var(--space-6); color: var(--on-ink); background: var(--ink-900); }
+.brand-mark { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border-radius: var(--radius-mark); color: var(--on-ink); background: linear-gradient(135deg, var(--brand-red), var(--brand-orange)); font: 700 18px var(--font-sans); }
+.app-header h1 { margin: 0; color: var(--on-ink); font: 700 17px var(--font-sans); }
+.app-header p { margin: 2px 0 0; color: var(--on-ink-muted); font: 12px var(--font-sans); }
+.icon-button { display: grid; min-width: var(--tap-target); min-height: var(--tap-target); place-items: center; margin-left: auto; padding: 0; color: var(--on-ink-icon); background: none; border: 0; cursor: pointer; font-size: 21px; }
+.icon-button + .icon-button { margin-left: 0; }
+
+/* HeadlineRow — whole row is one link, ≥ tap-target */
+.digest-list { margin: 0; padding: 0; list-style: none; }
+.headline-item { border-bottom: 1px solid var(--line-50); }
+.headline-link { display: flex; min-height: var(--tap-target); flex-direction: column; justify-content: center; padding: 14px var(--space-6); color: inherit; text-decoration: none; }
+.headline-link:hover, .headline-link:focus-visible { background: var(--hover-row); outline: none; }
+.headline-meta { display: flex; align-items: center; gap: 7px; color: var(--slate-400); font: 10px var(--font-sans); text-transform: uppercase; letter-spacing: .7px; }
+.source-name { display: inline-flex; align-items: center; gap: 6px; color: var(--slate-600); font-weight: 700; }
+.source-dot { width: 6px; height: 6px; border-radius: var(--radius-round); background: var(--source-dot); }
+.meta-divider { color: var(--line-300); }
+.headline-meta time { margin-left: auto; text-transform: none; letter-spacing: 0; white-space: nowrap; }
+.headline-link h2 { margin: 7px 0 4px; color: var(--ink-700); font: 700 15px/1.2 var(--font-sans); }
+.headline-link p { margin: 0; color: var(--slate-400); font: 12px/1.35 var(--font-sans); }
+
+/* Footers */
+.app-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: 0 var(--space-6); color: var(--slate-400); border-top: 1px solid var(--line-100); font: 11px var(--font-sans); }
+.email-footer { padding: var(--space-6); color: var(--slate-400); background: var(--surface-band); font: 12px/1.5 var(--font-sans); }
+.email-footer p { margin: 0 0 var(--space-2); }
+
+/* Buttons — one .primary-button per screen */
+.primary-button { display: flex; width: 100%; min-height: var(--tap-target); align-items: center; justify-content: center; padding: var(--space-3) var(--space-5); color: var(--on-ink); border: 0; border-radius: var(--radius-control); background: linear-gradient(100deg, var(--action-red), var(--action-orange)); cursor: pointer; font: 700 14px var(--font-sans); }
+.primary-button:disabled { cursor: not-allowed; opacity: .5; }
+.link-button { display: inline-flex; min-height: var(--tap-target); align-items: center; padding: 0 var(--space-1); color: var(--accent-red); border: 0; background: none; cursor: pointer; font: 700 12px var(--font-sans); text-decoration: none; }
+
+/* Form — Settings / sign-up */
+.content { display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-7) var(--space-6); }
+.section-kicker { margin: 0; color: var(--slate-600); font: 11px var(--font-serif); letter-spacing: 1px; text-transform: uppercase; }
+.intro { margin: 0; color: var(--slate-500); font: 14px/1.75 var(--font-serif); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > span { color: var(--slate-600); font: 700 12px var(--font-sans); }
+.field-row { display: flex; align-items: center; gap: var(--space-2); }
+.field input { width: 100%; min-height: var(--tap-target); padding: 0 var(--space-4); color: var(--ink-700); border: 1px solid var(--line-200); border-radius: var(--radius-control); outline: 0; background: var(--surface-card); font: 15px var(--font-sans); }
+.field input:focus-visible { border-color: var(--accent-red-strong); box-shadow: var(--shadow-focus); }
+.field input[readonly] { color: var(--slate-600); background: var(--surface-muted); }
+.field input.code-input { letter-spacing: 8px; font: 700 20px var(--font-sans); text-align: center; }
+.helper { margin: 0; color: var(--slate-400); font: 12px/1.5 var(--font-sans); }
+.notice-box { margin: 0; padding: var(--space-5); color: var(--slate-600); border-radius: var(--radius-chip); background: var(--surface-muted); font: 13px/1.6 var(--font-sans); }
+.consent { display: flex; min-height: var(--tap-target); align-items: flex-start; gap: var(--space-4); padding: var(--space-4); border: 1px solid var(--line-200); border-radius: var(--radius-row); color: var(--ink-700); cursor: pointer; font: 13px/1.5 var(--font-sans); }
+.consent input { width: 20px; height: 20px; flex: 0 0 auto; margin: 0; accent-color: var(--action-red); }
+.legal-links { display: flex; flex-wrap: wrap; gap: var(--space-4); margin: calc(-1 * var(--space-3)) 0 0; }
