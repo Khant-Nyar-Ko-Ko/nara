@@ -1,0 +1,56 @@
+@startuml D2-use-case
+' D2 — Use Case: who can do what. Month-2 scope (F1–F3, LR3/LR4; LR1 is a storage rule, shown in D3).
+' UML notation: actors = stick figures, use cases = ovals in the system box,
+' actor–use case = plain line (no arrowhead), «include»/«extend» = dashed, open arrowhead.
+left to right direction
+skinparam shadowing false
+skinparam defaultFontSize 14
+skinparam actorStyle default
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #4A7BC8
+  BorderThickness 2
+  BackgroundColor<<core>> #FFE9A8
+  BorderColor<<core>> #B8860B
+  BorderThickness<<core>> 3
+  BorderColor<<legal>> #C9A227
+  ArrowColor #555555
+}
+hide stereotype
+
+actor "Thai news reader" as Reader
+actor "Email service" as Email
+actor "Thai news websites" as Sites
+
+rectangle "NaraNews" {
+  usecase "★ Aggregate\nheadlines (F1)" as UC3 <<core>>
+  usecase "★ Read one-line\nheadline list (F2)" as UC1 <<core>>
+  usecase "Open full\nsource article (F2)" as UC2
+  usecase "Turn on\nemail digest (F3)" as UC4
+  usecase "Sign in with\nemailed code (LR3)" as UC5 <<legal>>
+  usecase "Give consent\n(LR4)" as UC6 <<legal>>
+  usecase "Receive email digest\nwhen away (F3)" as UC7
+}
+
+Reader -- UC1
+Reader -- UC4
+Reader -- UC7
+Email -- UC5
+Email -- UC7
+Sites -- UC3
+
+UC2 .> UC1 : <<extend>>
+UC4 .> UC5 : <<include>>
+UC4 .> UC6 : <<include>>
+
+legend right
+  |= Symbol |= Meaning |
+  | stick figure | Actor (person or outside system) |
+  | oval | Use case inside NaraNews |
+  | <back:#FFE9A8> yellow oval </back> | ★ Core feature: One-line headline digest (F1 + F2) |
+  | gold-bordered oval | Legal step (LR#) |
+  | plain line | Actor takes part in the use case |
+  | dashed → «include» | Always happens as part of the base case |
+  | dashed → «extend» | Optional step the reader may take |
+endlegend
+@enduml
