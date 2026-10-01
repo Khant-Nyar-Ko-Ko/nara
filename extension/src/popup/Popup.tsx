@@ -29,22 +29,19 @@ export function Popup() {
   const [digestTimes, setDigestTimes] = useState<string[]>(DEFAULT_DIGEST_TIMES);
   // LR4 / rule.md PDPA: opt-in, unchecked by default. Real consent is recorded on the options page.
   const [emailFallback, setEmailFallback] = useState(false);
-  const [notifyWhenIdle, setNotifyWhenIdle] = useState(true);
-  const [quietHours, setQuietHours] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
     (async () => {
       const setup = await chrome.storage.local.get([SETUP_COMPLETE_KEY, TOPICS_KEY, DIGEST_TIMES_KEY]);
+      if (cancelled) return;
+      const savedTopics = setup[TOPICS_KEY];
+      const savedTimes = setup[DIGEST_TIMES_KEY];
+      setSelectedTopics(Array.isArray(savedTopics) ? savedTopics : DEFAULT_TOPICS);
+      setDigestTimes(Array.isArray(savedTimes) ? savedTimes : DEFAULT_DIGEST_TIMES);
       if (!setup[SETUP_COMPLETE_KEY]) {
-        if (!cancelled) {
-          const savedTopics = setup[TOPICS_KEY];
-          const savedTimes = setup[DIGEST_TIMES_KEY];
-          setSelectedTopics(Array.isArray(savedTopics) ? savedTopics : DEFAULT_TOPICS);
-          setDigestTimes(Array.isArray(savedTimes) ? savedTimes : DEFAULT_DIGEST_TIMES);
-          setSetupPage(1);
-        }
+        setSetupPage(1);
         return;
       }
 
@@ -121,11 +118,7 @@ export function Popup() {
       <DeliverySetup
         digestTimes={digestTimes}
         emailFallback={emailFallback}
-        notifyWhenIdle={notifyWhenIdle}
-        quietHours={quietHours}
         onEmailFallbackChange={setEmailFallback}
-        onNotifyWhenIdleChange={setNotifyWhenIdle}
-        onQuietHoursChange={setQuietHours}
         onAddTime={addDigestTime}
         onRemoveTime={removeDigestTime}
         onBack={() => setSetupPage(1)}
@@ -148,5 +141,5 @@ export function Popup() {
   if (status === "error") return <main className="popup-shell"><EmptyState message="Couldn't load headlines. Try again later." /></main>;
   if (headlines.length === 0) return <main className="popup-shell"><EmptyState message="No headlines right now." /></main>;
 
-  return <DigestView headlines={headlines} isDemoData={isDemoData} onResetSetup={() => void resetSetup()} />;
+  return <DigestView headlines={headlines} topics={selectedTopics} isDemoData={isDemoData} onResetSetup={() => void resetSetup()} />;
 }

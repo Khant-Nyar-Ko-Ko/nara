@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NaraNews · Sign up (lo-fi)</title>
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components.css"></head>
+<body>
+<p class="proto-note">Screen 1 of 3 · Before the journey: one-time sign-up (LR3, LR4) · <a href="index.html">All screens</a></p>
+<main class="screen">
+  <header class="app-header">
+    <span class="brand-mark" aria-hidden="true">N</span>
+    <div><h1>Email digest</h1><p>Get today's headlines when you're away</p></div>
+  </header>
+  <form class="content" onsubmit="event.preventDefault(); location.href='02-email-digest.html';">
+    <p class="intro">We'll email you the same one-line headlines when you're not using Chrome.</p>
+
+    <label class="field"><span>Email address</span>
+      <span class="field-row"><input type="email" value="reader@example.com" readonly aria-label="Email address"><button type="button" class="link-button">Change</button></span>
+    </label>
+
+    <label class="field"><span>6-digit code</span>
+      <input class="code-input" inputmode="numeric" maxlength="6" placeholder="••••••" value="482913" autocomplete="one-time-code">
+    </label>
+    <p class="helper">We sent a code to reader@example.com. <button type="button" class="link-button">Send a new code</button></p>
+
+    <p class="notice-box">We use your email only to send this digest when you're away from Chrome. We never use it for anything else.</p>
+
+    <label class="consent"><input type="checkbox" checked>
+      <span>I agree to the Terms and Privacy Policy.</span>
+    </label>
+    <p class="legal-links"><a class="link-button" href="#">Read the Terms</a><a class="link-button" href="#">Read the Privacy Policy</a></p>
+
+    <button class="primary-button" type="submit">Turn on email digest</button>
+  </form>
+</main>
+</body></html>

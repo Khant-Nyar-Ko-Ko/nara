@@ -118,12 +118,40 @@ CREATE TABLE IF NOT EXISTS consent_log (
 );
 `;
 
+// Sign-in codes (lib/emailCode.ts). Holds an email address, so runRetentionJob
+// deletes rows after EMAIL_CODE_RETENTION_HOURS. The code itself is only stored hashed.
+const EMAIL_CODES_TABLE = `
+CREATE TABLE IF NOT EXISTS email_codes (
+  id BIGSERIAL PRIMARY KEY,
+  email TEXT NOT NULL,
+  code_hash TEXT NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  consumed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS email_codes_email_idx ON email_codes (email, created_at);
+`;
+
+// One account per verified email, so sign-in always finds the same user.
+const VERIFIED_EMAIL_INDEX = `
+CREATE UNIQUE INDEX IF NOT EXISTS user_contacts_verified_email_idx
+  ON user_contacts (email) WHERE email_verified_at IS NOT NULL;
+`;
+
 export async function ensureSchema(): Promise<void> {
   await query(`CREATE EXTENSION IF NOT EXISTS pgcrypto;`); // for gen_random_uuid()
   await query(USERS_TABLE);
   await query(USER_CONTACTS_TABLE);
   await query(ACCESS_LOG_TABLE);
   await query(CONSENT_LOG_TABLE);
+  await query(EMAIL_CODES_TABLE);
+  await query(VERIFIED_EMAIL_INDEX);
+  // Supabase exposes `public` tables via its REST API to anyone with the public
+  // key. RLS with no policies closes that; the owning role and service role bypass it.
+  for (const table of ["users", "user_contacts", "access_log", "consent_log", "email_codes"]) {
+    await query(`ALTER TABLE ${table} ENABLE ROW LEVEL SECURITY;`);
+  }
 }
 
 // --- Retention / anonymisation job ---------------------------------------
@@ -134,8 +162,11 @@ export async function ensureSchema(): Promise<void> {
 const ACCESS_LOG_RETENTION_DAYS = 365; // PDPA default for activity logs; CCA §26 floor is 90.
 const MIN_LAWFUL_RETENTION_DAYS = 90;
 const INACTIVE_CONTACT_RETENTION_DAYS = 730; // PDPA default: 2 years after last login.
+const EMAIL_CODE_RETENTION_HOURS = 24; // Codes expire in 10 minutes; nothing needs them after that.
 
-export async function runRetentionJob(retentionPool: Pool): Promise<{ accessLogDeleted: number; contactsAnonymised: number }> {
+export async function runRetentionJob(
+  retentionPool: Pool,
+): Promise<{ accessLogDeleted: number; contactsAnonymised: number; emailCodesDeleted: number }> {
   if (ACCESS_LOG_RETENTION_DAYS < MIN_LAWFUL_RETENTION_DAYS) {
     throw new Error(`access_log retention (${ACCESS_LOG_RETENTION_DAYS}d) may not go below the CCA §26 floor of ${MIN_LAWFUL_RETENTION_DAYS}d.`);
   }
@@ -156,5 +187,14 @@ export async function runRetentionJob(retentionPool: Pool): Promise<{ accessLogD
     [INACTIVE_CONTACT_RETENTION_DAYS],
   );
 
-  return { accessLogDeleted: deleted.rowCount ?? 0, contactsAnonymised: anonymised.rowCount ?? 0 };
+  const codes = await retentionPool.query(
+    `DELETE FROM email_codes WHERE created_at < now() - ($1 || ' hours')::interval`,
+    [EMAIL_CODE_RETENTION_HOURS],
+  );
+
+  return {
+    accessLogDeleted: deleted.rowCount ?? 0,
+    contactsAnonymised: anonymised.rowCount ?? 0,
+    emailCodesDeleted: codes.rowCount ?? 0,
+  };
 }

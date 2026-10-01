@@ -1,0 +1,35 @@
+name: Crawl news
+
+on:
+  schedule:
+    # Every 3 hours (UTC). Team decision 2026-09-26; no NFR sets an interval yet.
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: crawl-news
+  cancel-in-progress: false
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --workspace crawler
+
+      - run: npm run crawl:manual --workspace crawler
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

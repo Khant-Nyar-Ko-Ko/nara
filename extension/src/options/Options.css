@@ -1,0 +1,64 @@
+/* Same visual language as src/popup/Popup.css (colors, fonts, buttons), sized for a full tab. */
+:root {
+  color: #14213d;
+  background: #eef1f6;
+  font-family: Georgia, "Times New Roman", serif;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; background: #eef1f6; }
+
+button, input { font: inherit; }
+
+.settings-shell {
+  width: min(440px, calc(100% - 32px));
+  margin: 48px auto;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(27, 44, 74, .14);
+}
+
+.settings-header { display: flex; align-items: center; gap: 12px; padding: 18px 20px; color: #fff; background: #091329; }
+.brand-mark { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border-radius: 10px; color: #fff; background: linear-gradient(135deg, #ec1c24, #ff631f); font: 700 18px Arial, sans-serif; }
+.settings-header h1, .settings-header p { margin: 0; }
+.settings-header h1 { font: 700 17px Arial, sans-serif; }
+.settings-header p { margin-top: 2px; color: #aeb8ca; font: 12px Arial, sans-serif; }
+
+.settings-content { display: flex; flex-direction: column; gap: 14px; padding: 22px 20px 20px; }
+.settings-form { display: flex; flex-direction: column; gap: 14px; }
+.section-kicker { margin: 0; color: #40506b; font: 11px Georgia, "Times New Roman", serif; letter-spacing: 1px; }
+.settings-intro { margin: 0; color: #52627b; font: 14px/1.7 Georgia, "Times New Roman", serif; }
+.settings-intro strong { color: #17243a; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field span { color: #40506b; font: 700 12px Arial, sans-serif; }
+.field input { min-height: 42px; padding: 0 12px; color: #17243a; border: 1px solid #d9e0eb; border-radius: 11px; outline: 0; background: #fff; font: 15px Arial, sans-serif; }
+.field input:focus-visible { border-color: #f1262d; box-shadow: 0 0 0 3px #f9dfe0; }
+.code-input { letter-spacing: 8px; font: 700 20px Arial, sans-serif !important; text-align: center; }
+
+.primary-button { display: flex; width: 100%; min-height: 42px; align-items: center; justify-content: center; gap: 10px; padding: 10px 14px; color: #fff; border: 0; border-radius: 11px; background: linear-gradient(100deg, #ea1e23, #fb5b1d); cursor: pointer; font: 700 14px Arial, sans-serif; }
+.primary-button:disabled { cursor: not-allowed; opacity: .5; }
+.primary-button span { font-size: 22px; font-weight: 400; line-height: 12px; }
+.secondary-button { padding: 10px 14px; color: #40506b; border: 1px solid #d9e0eb; border-radius: 11px; background: #fff; cursor: pointer; font: 700 13px Arial, sans-serif; }
+.link-button { padding: 0; color: #df252b; border: 0; background: none; cursor: pointer; font: 700 12px Arial, sans-serif; }
+
+.account-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 12px; border: 1px solid #d9e0eb; border-radius: 15px; }
+.account-row span { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
+.account-row small { color: #68738a; font: 11px Arial, sans-serif; }
+.account-row strong { overflow: hidden; color: #17243a; font: 700 13px Arial, sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+
+.notice-box { margin: 0; padding: 14px; color: #40506b; border-radius: 12px; background: #f8f9fb; font: 13px/1.6 Arial, sans-serif; }
+
+.status-on { display: flex; flex-direction: column; gap: 4px; padding: 13px 14px; border: 1px solid #f4a4a5; border-radius: 15px; background: #fff7f7; }
+.status-on strong { color: #df252b; font: 700 14px Arial, sans-serif; }
+.status-on small { color: #68738a; font: 12px/1.5 Arial, sans-serif; }
+
+.error-text { margin: 0; padding: 9px 12px; color: #b3151b; border-radius: 10px; background: #fdecec; font: 12px Arial, sans-serif; }
+
+.progress-footer { display: flex; align-items: center; gap: 8px; padding: 12px 20px 14px; background: #edf0f5; }
+.progress-footer span { height: 4px; flex: 1; border-radius: 4px; background: #dce2eb; }
+.progress-footer span.active { background: #f04a25; }
+.progress-footer strong { margin-left: 8px; color: #40506b; font: 12px Arial, sans-serif; white-space: nowrap; }

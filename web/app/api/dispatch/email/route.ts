@@ -7,40 +7,36 @@ import type { NextRequest } from "next/server";
 import { withAccessLog } from "@/lib/logging";
 import { resolveSession, isEmailVerified, hasActiveConsent, EMAIL_FALLBACK_CONSENT_PURPOSE } from "@/lib/auth";
 import { query } from "@/lib/db";
-import { fetchAllHeadlines } from "@/lib/headlines";
-import { summarize } from "@/lib/summarize";
-
-const RESEND_API_URL = "https://api.resend.com/emails";
-
-async function sendEmail(to: string, subject: string, html: string): Promise<void> {
-  const apiKey = process.env.EMAIL_PROVIDER_API_KEY;
-  const from = process.env.EMAIL_FROM_ADDRESS;
-  if (!apiKey || !from) throw new Error("EMAIL_PROVIDER_API_KEY / EMAIL_FROM_ADDRESS not set");
-
-  const res = await fetch(RESEND_API_URL, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from, to, subject, html }),
-  });
-  if (!res.ok) throw new Error(`Resend dispatch failed: HTTP ${res.status}`);
-}
-
-function escapeHtml(input: string): string {
-  const escapes: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
-  return input.replace(/[&<>"']/g, (c) => escapes[c]);
-}
+import { readDigest } from "@/lib/news";
+import { escapeHtml, sendEmail } from "@/lib/email";
 
 function renderDigestHtml(items: { summary: string; url: string; source: string }[]): string {
   const rows = items
-    .map((item) => `<li><a href="${item.url}">${escapeHtml(item.summary)}</a> — <small>${escapeHtml(item.source)}</small></li>`)
+    .map((item) => `<li><a href="${escapeHtml(item.url)}">${escapeHtml(item.summary)}</a> — <small>${escapeHtml(item.source)}</small></li>`)
     .join("");
   return `<h1>Your NaraNews digest</h1><ul>${rows}</ul>`;
+}
+
+const DISPATCH_COOLDOWN_MINUTES = 10;
+
+// The extension calls this on every idle transition; one digest per cooldown is enough.
+async function sentRecently(userId: string): Promise<boolean> {
+  const [row] = await query<{ n: number }>(
+    `SELECT count(*)::int AS n FROM access_log
+     WHERE user_id = $1 AND route = '/api/dispatch/email' AND status = 200
+       AND ts > now() - ($2 || ' minutes')::interval`,
+    [userId, DISPATCH_COOLDOWN_MINUTES],
+  );
+  return row.n > 0;
 }
 
 export const POST = withAccessLog(async function POST(req: NextRequest) {
   const session = resolveSession(req);
   if (!session) {
     return Response.json({ error: "authentication required" }, { status: 401 });
+  }
+  if (await sentRecently(session.userId)) {
+    return Response.json({ error: `a digest was sent in the last ${DISPATCH_COOLDOWN_MINUTES} minutes` }, { status: 429 });
   }
   if (!(await isEmailVerified(session.userId))) {
     return Response.json({ error: "email not verified" }, { status: 403 });
@@ -54,8 +50,8 @@ export const POST = withAccessLog(async function POST(req: NextRequest) {
     return Response.json({ error: "no email on file" }, { status: 409 });
   }
 
-  const headlines = await fetchAllHeadlines();
-  const items = headlines.map((h) => ({ summary: summarize(h), url: h.url, source: h.source }));
+  // No stored language preference yet, so the email uses the digest default (th).
+  const items = await readDigest("th");
 
   try {
     await sendEmail(contact.email, "Your NaraNews digest", renderDigestHtml(items));

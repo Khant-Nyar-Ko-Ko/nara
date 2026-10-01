@@ -32,6 +32,29 @@ interface NewsRow {
   published_at: Date;
 }
 
+export interface NewsHeadline {
+  id: string;
+  source: string;
+  category: string | null;
+  url: string;
+  publishedAt: string;
+  headlines: Record<DigestLang, string | null>;
+}
+
+interface AllLangRow {
+  source: string;
+  category: string | null;
+  url: string;
+  headline_th: string | null;
+  headline_en: string | null;
+  headline_mm: string | null;
+  published_at: Date;
+}
+
+function newsId(url: string): string {
+  return createHash("sha1").update(url).digest("hex");
+}
+
 export function parseLang(value: string | null): DigestLang | null {
   if (value === null) return "th";
   return DIGEST_LANGS.find((lang) => lang === value) ?? null;
@@ -49,11 +72,33 @@ export async function readDigest(lang: DigestLang): Promise<DigestItem[]> {
   );
 
   return rows.map((row) => ({
-    id: createHash("sha1").update(row.url).digest("hex"),
+    id: newsId(row.url),
     source: row.source,
     category: row.category,
     summary: row.summary,
     url: row.url,
     fetchedAt: row.published_at.toISOString(),
+  }));
+}
+
+// F1: every language per item. Post `content` is deliberately not exposed.
+export async function readHeadlines(): Promise<NewsHeadline[]> {
+  const rows = await query<AllLangRow>(
+    `SELECT source, category, url, headline_th, headline_en, headline_mm,
+            COALESCE(date::timestamptz, created_at) AS published_at
+     FROM news
+     WHERE url IS NOT NULL
+     ORDER BY published_at DESC
+     LIMIT $1`,
+    [DIGEST_LIMIT],
+  );
+
+  return rows.map((row) => ({
+    id: newsId(row.url),
+    source: row.source,
+    category: row.category,
+    url: row.url,
+    publishedAt: row.published_at.toISOString(),
+    headlines: { th: row.headline_th, en: row.headline_en, mm: row.headline_mm },
   }));
 }
