@@ -16,6 +16,8 @@ concurrency:
 jobs:
   crawl:
     runs-on: ubuntu-latest
+    # Secrets live in the `nara-keys` environment, not as repository secrets.
+    environment: nara-keys
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
