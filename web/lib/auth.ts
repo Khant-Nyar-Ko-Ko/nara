@@ -7,6 +7,7 @@
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import type { NextRequest } from "next/server";
 import { query } from "./db";
+import { WEB_SESSION_COOKIE } from "./web-session";
 
 // consent_log purpose for F3's ToS/Privacy-Policy consent (LR4), shared by
 // /api/consent (writer) and /api/dispatch/email (reader, via hasActiveConsent).
@@ -46,16 +47,21 @@ function bearerToken(req: NextRequest): string | null {
 }
 
 export function resolveSession(req: NextRequest): AuthedSession | null {
-  const token = bearerToken(req);
+  const bearer = bearerToken(req);
+  // Cookie-authenticated writes must originate from this website (CSRF protection).
+  if (!bearer && !["GET", "HEAD", "OPTIONS"].includes(req.method) && req.headers.get("origin") !== req.nextUrl.origin) return null;
+  const token = bearer ?? req.cookies.get(WEB_SESSION_COOKIE)?.value;
   if (!token) return null;
 
-  const [userId, expiresAtSeconds, signature] = token.split(".");
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  const [userId, expiresAtSeconds, signature] = parts;
   if (!userId || !expiresAtSeconds || !signature) return null;
 
   const expected = Buffer.from(sign(`${userId}.${expiresAtSeconds}`));
   const actual = Buffer.from(signature);
   if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) return null;
-  if (Number(expiresAtSeconds) * 1000 <= Date.now()) return null;
+  if (!/^\d+$/.test(expiresAtSeconds) || !Number.isSafeInteger(Number(expiresAtSeconds)) || Number(expiresAtSeconds) * 1000 <= Date.now()) return null;
 
   return { userId, sessionId: createHash("sha256").update(token).digest("hex").slice(0, 32) };
 }

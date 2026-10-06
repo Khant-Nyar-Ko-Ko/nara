@@ -86,3 +86,13 @@ export async function postConsent(session: Session, body: ConsentRequest): Promi
   });
   if (!res.ok) throw await errorFrom(res);
 }
+
+// Read the same account-level consent used by the website settings.
+export async function readEmailSettings(session: Session): Promise<{ email: string; granted: boolean }> {
+  const res = await fetch(`${API_BASE_URL}/api/auth/session`, {
+    headers: { Authorization: `Bearer ${session.token}` },
+    cache: "no-store",
+  });
+  if (!res.ok) throw await errorFrom(res);
+  return res.json();
+}
