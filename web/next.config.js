@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
-// Template only. NOTE: deploy region must be Thailand/SEA per rule.md (PDPA —
-// "prefer Thailand/Singapore regions for new services") — set this when
-// configuring the actual hosting provider, not here.
-const nextConfig = {};
+const securityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+];
+
+const nextConfig = {
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
+  },
+};
 
 module.exports = nextConfig;

@@ -6,7 +6,7 @@
   --line:#d9e0eb;
   --red:#c7272e;
   --paper:#f8f9fb;
-  --gradient:linear-gradient(120deg,#d91d26,#ed541d);
+  --gradient:linear-gradient(120deg,#d91d26,#c9411a); /* end stop darkened from #ed541d: white text needs 4.5:1 (WCAG AA) */
 }
 
 * {
