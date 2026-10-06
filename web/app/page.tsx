@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LandingDemo, DigestPreview } from "./landing-demo";
+import { HeroLive } from "./hero-live";
 
 export default function HomePage() {
   return (
@@ -8,9 +9,10 @@ export default function HomePage() {
       <header className="hero">
         <div className="container">
           <nav aria-label="Main navigation"><a className="brand" href="#top"><span className="brand-mark">N</span>NaraNews</a><Link className="nav-link" href="/settings">Sign in / Email settings <span aria-hidden="true">↗</span></Link></nav>
-          <div className="hero-copy"><p className="eyebrow">THAILAND NEWS, WITHOUT THE TAB OVERLOAD</p><h1>Every Thai headline,<br />one clean list.</h1><p>A Chrome extension that gathers headlines from Thailand’s news sources into one digest. Scan a one-line summary, then jump straight to the source.</p>
+          <div className="hero-grid"><div className="hero-copy"><p className="eyebrow">THAILAND NEWS, WITHOUT THE TAB OVERLOAD</p><h1>Every Thai headline,<br />one clean list.</h1><p>A Chrome extension that gathers headlines from Thailand’s news sources into one digest. Scan a one-line summary, then jump straight to the source.</p>
             <div className="hero-actions"><Link className="primary-button" href="/digest">Read the live digest →</Link><Link href="/install">Get the Chrome extension ↗</Link></div><div className="feature-tags"><span>Aggregated feed</span><span>One-line summaries</span><span>Email fallback</span><span>Built for Chrome</span></div>
           </div>
+          <HeroLive /></div>
         </div>
       </header>
       <div className="container showcases">
