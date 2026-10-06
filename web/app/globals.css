@@ -785,3 +785,6 @@ button:disabled { opacity: .6; cursor: wait; }
   .hero-grid { grid-template-columns:minmax(0,1fr); gap:0; }
   .hero-live { margin-bottom:56px; max-width:520px; }
 }
+
+.digest-toolbar .live-badge { background:#dcf5e9; color:#11643f; }
+.priority-tag { margin-left:auto; border-radius:10px; background:#fdecec; color:#a71f25; padding:2px 7px; text-transform:none; letter-spacing:0; font-weight:700; }
