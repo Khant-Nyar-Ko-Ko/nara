@@ -152,7 +152,7 @@ a,button {
   border-radius:6px;
   background:#ffffff06;
   padding:8px 11px;
-  font-size:11px;
+  font-size:12px;
   color:#dbe1ec;
 }
 
@@ -613,9 +613,16 @@ h2 {
   font-size:16px;
 }
 
-.site-footer p,.site-footer>a,.site-footer .container>a:last-child {
-  font-size:11px;
+.site-footer p,.footer-links a {
+  font-size:12px;
   color:var(--muted);
+}
+.footer-links {
+  display:flex;
+  gap:20px;
+}
+.footer-links a:hover {
+  color:var(--ink);
 }
 
 .skip-link {
@@ -676,7 +683,7 @@ h2 {
     gap:8px;
   }
   .feature-tags span {
-    font-size:10px;
+    font-size:11px;
   }
   .showcases {
     padding-top:40px;
