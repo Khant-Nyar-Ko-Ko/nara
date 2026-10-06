@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "NaraNews — Thailand news, one clean list",
   description: "Catch up on Thai news with a Chrome extension that brings headlines and one-line summaries into one digest. Explore the interactive NaraNews preview.",
   openGraph: {
