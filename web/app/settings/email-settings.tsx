@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 // This exact notice is displayed before consent and hashed into the existing audit record.
-const NOTICE = "Turn on the email digest for the verified address shown above. NaraNews uses this address for sign-in codes and the news digest, never marketing. Account, consent and access records are stored in Supabase in Seoul, South Korea. Email is sent through Resend. You can withdraw email consent on this screen at any time. Automatic delivery requires the extension to be signed in and Chrome to be running.";
+const NOTICE = "Turn on the email digest for the verified address shown above. NaraNews uses this address for sign-in codes and the news digest, never marketing. Account, consent and access records are stored in Supabase in Seoul, South Korea. Email is sent through Google’s Gmail service, which may process it outside Thailand. You can withdraw email consent on this screen at any time. Automatic delivery requires the extension to be signed in and Chrome to be running.";
 const AGREE = "I agree — turn on email digest";
 const WITHDRAW = "Turn off email digest";
 type Account = { email: string; granted: boolean };
