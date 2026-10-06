@@ -72,36 +72,35 @@ function buildFacebookActorInput(source: FacebookNewsSource, resultsLimit: numbe
   };
 }
 
-export async function crawlOneNewsFromSource(
+// Every usable post from the latest `resultsLimit` on the page. Already-saved
+// posts are dropped later (filterUnseenPosts), so returning only the first one
+// would add nothing whenever the newest post was crawled before.
+export async function crawlNewsFromSource(
   source: FacebookNewsSource,
   config: ApifyCrawlerConfig = getApifyCrawlerConfig(),
-): Promise<CrawledPost | null> {
+): Promise<CrawledPost[]> {
   const client = new ApifyClient({ token: config.token });
   const run = await client.actor(config.facebookPostsActorId).call(buildFacebookActorInput(source, config.resultsLimit));
 
   const dataset = await client.dataset(run.defaultDatasetId).listItems({ limit: config.resultsLimit });
   const items = dataset.items as ApifyDatasetItem[];
 
-  for (const item of items) {
+  return items.flatMap((item) => {
     const normalized = normalizeApifyItem(source, item);
-    if (normalized) return normalized;
-  }
-
-  return null;
+    return normalized ? [normalized] : [];
+  });
 }
 
-export async function crawlOneNewsPerSource(
+export async function crawlLatestNews(
   sources: FacebookNewsSource[] = FACEBOOK_NEWS_SOURCES,
   config: ApifyCrawlerConfig = getApifyCrawlerConfig(),
 ): Promise<CrawledPost[]> {
   const results = await Promise.allSettled(
-    sources.map((source) => crawlOneNewsFromSource(source, config)),
+    sources.map((source) => crawlNewsFromSource(source, config)),
   );
 
   return results.flatMap((result, index) => {
-    if (result.status === "fulfilled") {
-      return result.value ? [result.value] : [];
-    }
+    if (result.status === "fulfilled") return result.value;
 
     console.error(`crawler: ${sources[index].id} failed`, result.reason);
     return [];

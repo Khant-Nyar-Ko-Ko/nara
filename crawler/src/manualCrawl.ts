@@ -1,9 +1,9 @@
-import { crawlOneNewsPerSource } from "./apifyFacebookCrawler.js";
+import { crawlLatestNews } from "./apifyFacebookCrawler.js";
 import { dedupePostsByUrl } from "./dedupe.js";
 import { generateHeadlinesForPosts } from "./groqHeadlines.js";
 import { filterUnseenPosts, insertNews } from "./supabaseNews.js";
 
-const posts = await crawlOneNewsPerSource();
+const posts = await crawlLatestNews();
 const newPosts = await filterUnseenPosts(dedupePostsByUrl(posts));
 const news = await generateHeadlinesForPosts(newPosts);
 
