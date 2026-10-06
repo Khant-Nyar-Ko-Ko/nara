@@ -1,13 +1,17 @@
 // F3 sign-in step 2: check the code, create or sign in the user with a
 // verified email (LR3), and return a session token for the extension.
 
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import { WEB_SESSION_COOKIE, webSessionCookieOptions } from "@/lib/web-session";
 import { withAccessLog } from "@/lib/logging";
 import { normalizeEmail, verifyCodeAndSignIn } from "@/lib/emailCode";
 import { createSessionToken } from "@/lib/auth";
 
 export const POST = withAccessLog(async function POST(req: NextRequest) {
-  const body = (await req.json().catch(() => null)) as { email?: unknown; code?: unknown } | null;
+  const body = (await req.json().catch(() => null)) as { email?: unknown; code?: unknown; webSession?: unknown } | null;
+  if (body?.webSession === true && req.headers.get("origin") !== req.nextUrl.origin) {
+    return Response.json({ error: "same-origin request required" }, { status: 403 });
+  }
   const email = normalizeEmail(body?.email);
   const code = typeof body?.code === "string" ? body.code.trim() : null;
   if (!email || !code) {
@@ -20,5 +24,10 @@ export const POST = withAccessLog(async function POST(req: NextRequest) {
   }
 
   const { token, expiresAt } = createSessionToken(userId);
-  return Response.json({ token, expiresAt, email });
+  if (body?.webSession === true) {
+    const response = NextResponse.json({ email, expiresAt }, { headers: { "Cache-Control": "no-store" } });
+    response.cookies.set(WEB_SESSION_COOKIE, token, { ...webSessionCookieOptions, expires: new Date(expiresAt) });
+    return response;
+  }
+  return Response.json({ token, expiresAt, email }, { headers: { "Cache-Control": "no-store" } });
 });

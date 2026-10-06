@@ -3,12 +3,12 @@
 // document_version_hash always matches what was actually displayed. Opt-out
 // uses the same screen (PDPA: withdrawable from the same screen it was given on).
 //
-// There's no read endpoint for existing consent state yet, so the consent step
-// always starts from the opt-in-required view — unchecked-by-default either way.
+// Load account consent so website and extension show the same delivery state.
 
 import { useEffect, useState, type ReactNode } from "react";
 import {
   postConsent,
+  readEmailSettings,
   readSession,
   requestSignInCode,
   signOut,
@@ -176,7 +176,18 @@ function SignIn({ onSignedIn }: { onSignedIn: (session: Session) => void }) {
 }
 
 function ConsentStep({ session, onSignOut }: { session: Session; onSignOut: () => void }) {
-  const [grantedAt, setGrantedAt] = useState<Date | null>(null);
+  const [granted, setGranted] = useState<boolean | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [reload, setReload] = useState(0);
+  useEffect(() => {
+    let cancelled = false;
+    setLoadError(false);
+    setGranted(null);
+    readEmailSettings(session).then(settings => {
+      if (!cancelled) setGranted(settings.granted);
+    }).catch(() => { if (!cancelled) setLoadError(true); });
+    return () => { cancelled = true; };
+  }, [session, reload]);
   const { busy, errorMessage, run } = useSubmit();
 
   function submitConsent(nextGranted: boolean) {
@@ -188,7 +199,7 @@ function ConsentStep({ session, onSignOut }: { session: Session; onSignOut: () =
         buttonText: nextGranted ? AGREE_BUTTON_TEXT : WITHDRAW_BUTTON_TEXT,
         granted: nextGranted,
       });
-      setGrantedAt(nextGranted ? new Date() : null);
+      setGranted(nextGranted);
     });
   }
 
@@ -204,14 +215,12 @@ function ConsentStep({ session, onSignOut }: { session: Session; onSignOut: () =
         </button>
       </div>
 
-      {grantedAt ? (
+      {loadError ? <><p role="alert">Could not load your email settings.</p><button className="secondary-button" onClick={() => setReload(value => value + 1)}>Try again</button></> : granted === null ? <p role="status">Loading email settings…</p> : granted ? (
         <>
           <div className="status-on" role="status">
             <strong>Email digest is on</strong>
             <small>
-              Sent to a verified address only, used for this digest and nothing else. Consent recorded on{" "}
-              {grantedAt.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })} · Turn
-              off any time.
+              Sent to a verified address only, used for this digest and nothing else. Turn off any time here or on the website.
             </small>
           </div>
           <ErrorText message={errorMessage} />
