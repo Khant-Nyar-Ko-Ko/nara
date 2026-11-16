@@ -3,7 +3,7 @@
 
 import type { NextRequest } from "next/server";
 import { requestIp, withAccessLog } from "@/lib/logging";
-import { isRateLimited, issueCode, normalizeEmail } from "@/lib/emailCode";
+import { isRateLimited, issueCode, normalizeEmail, signInCodeEmail } from "@/lib/emailCode";
 import { sendEmail } from "@/lib/email";
 
 export const POST = withAccessLog(async function POST(req: NextRequest) {
@@ -17,14 +17,9 @@ export const POST = withAccessLog(async function POST(req: NextRequest) {
     return Response.json({ error: "too many requests, try again in 15 minutes" }, { status: 429 });
   }
 
-  const code = await issueCode(email);
+  const { subject, html } = signInCodeEmail(await issueCode(email));
   try {
-    await sendEmail(
-      email,
-      `Your NaraNews sign-in code: ${code}`,
-      `<p>Your NaraNews sign-in code is <strong>${code}</strong>.</p>` +
-        `<p>It expires in 10 minutes. If you didn't ask for it, ignore this email.</p>`,
-    );
+    await sendEmail(email, subject, html);
   } catch (err) {
     console.error("sign-in code email failed", err instanceof Error ? err.message : err);
     return Response.json({ error: "couldn't send the code" }, { status: 502 });
