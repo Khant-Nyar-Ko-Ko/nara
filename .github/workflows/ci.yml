@@ -1,0 +1,42 @@
+name: CI
+
+# Typecheck, test and build every package on each pull request and on pushes
+# to main. Needs no secrets: web builds without DATABASE_URL/SMTP/etc. and
+# the tests use synthetic values only (rule.md: no production data in tests).
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck (extension, web, crawler)
+        run: npm run typecheck --workspaces
+
+      - name: Test (web)
+        run: npm test --workspace web
+
+      - name: Build extension
+        run: npm run build --workspace extension
+
+      - name: Build web
+        run: npm run build --workspace web
