@@ -1,11 +1,12 @@
 {
   "name": "naranews-extension",
   "private": true,
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "NaraNews Chrome extension (Manifest V3) — template only, no implementation yet.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "react": "^18.3.0",

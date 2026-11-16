@@ -15,21 +15,20 @@ export const FACEBOOK_NEWS_SOURCES: FacebookNewsSource[] = [
     id: "khaosod-english",
     name: "Khaosod English",
     facebookUrl: "https://www.facebook.com/KhaosodEnglish",
-  }
-  
-  // {
-  //   id: "matichon",
-  //   name: "Matichon",
-  //   facebookUrl: "https://www.facebook.com/MatichonOnline",
-  // },
-  // {
-  //   id: "thairath",
-  //   name: "Thai Rath",
-  //   facebookUrl: "https://www.facebook.com/thairath",
-  // },
-  // {
-  //   id: "dailynews",
-  //   name: "Dailynews",
-  //   facebookUrl: "https://www.facebook.com/dailynewsonlinefan",
-  // }
+  },
+  {
+    id: "matichon",
+    name: "Matichon",
+    facebookUrl: "https://www.facebook.com/MatichonOnline",
+  },
+  {
+    id: "thairath",
+    name: "Thai Rath",
+    facebookUrl: "https://www.facebook.com/thairath",
+  },
+  {
+    id: "dailynews",
+    name: "Dailynews",
+    facebookUrl: "https://www.facebook.com/dailynewsonlinefan",
+  },
 ];

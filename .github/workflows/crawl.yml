@@ -2,8 +2,11 @@ name: Crawl news
 
 on:
   schedule:
-    # Every 3 hours (UTC). Team decision 2026-09-26; no NFR sets an interval yet.
-    - cron: "0 */3 * * *"
+    # Every 3 hours, 07:00–22:00 Thailand time (UTC+7); no night runs (2026-11-16).
+    # Each run keeps only the latest APIFY_FACEBOOK_RESULTS_LIMIT posts per source,
+    # so posts beyond that within a gap (notably the 9-hour overnight one) are missed.
+    # 5 sources x 3 posts x 6 runs = up to 90 posts/day (was 2 x 5 x 8 = 80).
+    - cron: "0 0,3,6,9,12,15 * * *"
   workflow_dispatch:
 
 permissions:
@@ -36,4 +39,4 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           # Latest N posts per source; already-saved ones are skipped.
-          APIFY_FACEBOOK_RESULTS_LIMIT: "5"
+          APIFY_FACEBOOK_RESULTS_LIMIT: "3"
