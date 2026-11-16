@@ -80,7 +80,9 @@ export async function crawlNewsFromSource(
   config: ApifyCrawlerConfig = getApifyCrawlerConfig(),
 ): Promise<CrawledPost[]> {
   const client = new ApifyClient({ token: config.token });
-  const run = await client.actor(config.facebookPostsActorId).call(buildFacebookActorInput(source, config.resultsLimit));
+  const run = await client
+    .actor(config.facebookPostsActorId)
+    .call(buildFacebookActorInput(source, config.resultsLimit), { memory: config.actorMemoryMbytes });
 
   const dataset = await client.dataset(run.defaultDatasetId).listItems({ limit: config.resultsLimit });
   const items = dataset.items as ApifyDatasetItem[];
@@ -91,18 +93,29 @@ export async function crawlNewsFromSource(
   });
 }
 
+export interface CrawlResult {
+  posts: CrawledPost[];
+  // Ids of sources whose Actor run failed. Their posts are missing from `posts`;
+  // the caller still saves the rest, then reports the failure.
+  failedSources: string[];
+}
+
 export async function crawlLatestNews(
   sources: FacebookNewsSource[] = FACEBOOK_NEWS_SOURCES,
   config: ApifyCrawlerConfig = getApifyCrawlerConfig(),
-): Promise<CrawledPost[]> {
+): Promise<CrawlResult> {
   const results = await Promise.allSettled(
     sources.map((source) => crawlNewsFromSource(source, config)),
   );
 
-  return results.flatMap((result, index) => {
+  const failedSources: string[] = [];
+  const posts = results.flatMap((result, index) => {
     if (result.status === "fulfilled") return result.value;
 
+    failedSources.push(sources[index].id);
     console.error(`crawler: ${sources[index].id} failed`, result.reason);
     return [];
   });
+
+  return { posts, failedSources };
 }
