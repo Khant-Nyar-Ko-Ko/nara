@@ -72,5 +72,7 @@ function formatAge(fetchedAt: string) {
   const timestamp = new Date(fetchedAt).getTime();
   if (Number.isNaN(timestamp)) return "Recently";
   const minutes = Math.max(1, Math.round((Date.now() - timestamp) / 60000));
-  return minutes < 60 ? `${minutes}m ago` : `${Math.round(minutes / 60)}h ago`;
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  return hours < 24 ? `${hours}h ago` : `${Math.floor(hours / 24)}d ago`;
 }
