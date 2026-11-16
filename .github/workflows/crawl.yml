@@ -2,8 +2,10 @@ name: Crawl news
 
 on:
   schedule:
-    # Every 3 hours, 07:00–22:00 Thailand time (UTC+7); night runs dropped to cut
-    # Apify/Groq cost (2026-11-16). The 07:00 run picks up overnight posts.
+    # Every 3 hours, 07:00–22:00 Thailand time (UTC+7); no night runs (2026-11-16).
+    # Each run keeps only the latest APIFY_FACEBOOK_RESULTS_LIMIT posts per source,
+    # so posts beyond that within a gap (notably the 9-hour overnight one) are missed.
+    # 4 sources x 3 posts x 6 runs = up to 72 posts/day (was 1 x 5 x 8 = 40).
     - cron: "0 0,3,6,9,12,15 * * *"
   workflow_dispatch:
 
