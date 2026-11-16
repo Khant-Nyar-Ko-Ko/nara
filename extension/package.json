@@ -1,7 +1,7 @@
 {
   "name": "naranews-extension",
   "private": true,
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "NaraNews Chrome extension (Manifest V3) — template only, no implementation yet.",
   "scripts": {
     "dev": "vite",
