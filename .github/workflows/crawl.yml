@@ -2,8 +2,9 @@ name: Crawl news
 
 on:
   schedule:
-    # Every 3 hours (UTC). Team decision 2026-09-26; no NFR sets an interval yet.
-    - cron: "0 */3 * * *"
+    # Every 3 hours, 07:00–22:00 Thailand time (UTC+7); night runs dropped to cut
+    # Apify/Groq cost (2026-11-16). The 07:00 run picks up overnight posts.
+    - cron: "0 0,3,6,9,12,15 * * *"
   workflow_dispatch:
 
 permissions:
@@ -36,4 +37,4 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           # Latest N posts per source; already-saved ones are skipped.
-          APIFY_FACEBOOK_RESULTS_LIMIT: "5"
+          APIFY_FACEBOOK_RESULTS_LIMIT: "3"
