@@ -6,4 +6,4 @@ As Product Owner I owned the problem and the priorities. I ran the DISCOVER surv
 
 Evidence: [survey-results.md](../../01-requirements/survey-results.md), [path-b-user-research.md](../../01-requirements/research/path-b-user-research.md), [00-proposal.md](../../00-proposal.md), [backlog.md](../../01-requirements/backlog.md), commit [6de4657](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/6de4657) (landing page, digest and email settings), Test Plan §6 roles.
 
-**AI disclosure:** _[Lin to write: which AI tools you used, for what, and how you checked the output.]_
+**AI disclosure:** I used ChatGPT and Gemini to help word the survey questions, summarise Pantip threads and app-store reviews, draft the proposal and backlog wording, and prepare the consent form and recruitment messages. All survey answers came from real respondents, not AI. I checked every summary against the original posts, kept only requirements that trace to a real pain (P1–P4), and checked the consent form against rule.md (PDPA). A first draft of this statement was prepared with Claude Code from the repo and edited by me.
