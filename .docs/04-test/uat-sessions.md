@@ -71,4 +71,5 @@ UTAUT2 (Venkatesh, Thong & Xu 2012), 3 items per construct (Test Plan §5):
 - **Liked:** "The easy to use user interface and the fast responsiveness of the buttons."
 - **Stuck:** "I didn't get stuck at all"
 - **Keep using?** "I see myself using it for the foreseen future because of how easy it is to get the lastest news."
+- **Recording:** Zoom video of this session, 17 Nov 2026 13:14 (Thai time), recorded by the team's QA with the participant's separate media consent — [Google Drive](https://drive.google.com/file/d/1Q_PdmMh_1GjnZbPV3LXn1oyodzR5eRZR/view). Sharing: **anyone with the link can view** (team decision, 17 Nov).
 - **Moderator:** no issues during the run. T3 and T4 were completed but not timed. On T2 this participant was faster the old way (7.7 s) than with NaraNews (16.3 s); kept as recorded.
