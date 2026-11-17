@@ -36,7 +36,7 @@ Labels: **REAL** = data from real users · **SECONDARY** = published/online evid
 |---|---|
 | Test Plan | [../04-test/test-plan.pdf](../04-test/test-plan.pdf) |
 | Session logs of real users U02–U05 (**REAL**, codes only, identifying details removed) | [../04-test/uat-sessions.md](../04-test/uat-sessions.md) |
-| Video recording of session U05 (Zoom, 17 Nov; anyone with the link can view) | [Google Drive](https://drive.google.com/file/d/1Q_PdmMh_1GjnZbPV3LXn1oyodzR5eRZR/view), listed under U05 in [uat-sessions.md](../04-test/uat-sessions.md#u05) |
+| Video recordings of user-test sessions (Zoom; one file per participant code, e.g. "Test with U05.mp4"; anyone with the link can view) | [UAT testing folder](https://drive.google.com/drive/folders/1XzGAdkjOFNaBSmLgpRmuuaqxw0jHqASo) on Google Drive, listed in [uat-sessions.md](../04-test/uat-sessions.md) |
 | Before / After for every MUST task | [../04-test/uat-results.md](../04-test/uat-results.md) |
 | SUS and UTAUT2 responses and results | [../04-test/uat-sessions.md](../04-test/uat-sessions.md#questionnaire-answers-15), [../04-test/uat-results.md](../04-test/uat-results.md) |
 | Issue log (severity, fix commit, retest) | [../04-test/issue-log.md](../04-test/issue-log.md) |

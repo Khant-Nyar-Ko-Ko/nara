@@ -8,6 +8,7 @@ Method: [Test Plan](test-plan.pdf) §4 (tasks T1–T5, think-aloud, SUS, UTAUT2,
 - Eligible = not enrolled in 1305493 and not in the ADT 2566 intake (Test Plan §4). All four were eligible.
 - All four read news mainly in English; the Test Plan asked for at least 3 mainly-Thai readers (not met — see [uat-results.md](uat-results.md) limits).
 - Times are seconds. "—" = not recorded in the session.
+- **Session recordings:** the team's [UAT testing folder](https://drive.google.com/drive/folders/1XzGAdkjOFNaBSmLgpRmuuaqxw0jHqASo) on Google Drive (owner: QA), one video per session named by code, e.g. "Test with U05.mp4". Only sessions that were recorded with the participant's media consent are in it. Sharing: anyone with the link can view (team decision, 17 Nov).
 
 ## Summary table
 
@@ -71,5 +72,5 @@ UTAUT2 (Venkatesh, Thong & Xu 2012), 3 items per construct (Test Plan §5):
 - **Liked:** "The easy to use user interface and the fast responsiveness of the buttons."
 - **Stuck:** "I didn't get stuck at all"
 - **Keep using?** "I see myself using it for the foreseen future because of how easy it is to get the lastest news."
-- **Recording:** Zoom video of this session, 17 Nov 2026 13:14 (Thai time), recorded by the team's QA with the participant's separate media consent — [Google Drive](https://drive.google.com/file/d/1Q_PdmMh_1GjnZbPV3LXn1oyodzR5eRZR/view). Sharing: **anyone with the link can view** (team decision, 17 Nov).
+- **Recording:** Zoom video of this session, 17 Nov 2026 13:14 (Thai time), recorded by the team's QA with the participant's separate media consent — "Test with U05.mp4" in the [UAT testing folder](https://drive.google.com/drive/folders/1XzGAdkjOFNaBSmLgpRmuuaqxw0jHqASo). Sharing: **anyone with the link can view** (team decision, 17 Nov).
 - **Moderator:** no issues during the run. T3 and T4 were completed but not timed. On T2 this participant was faster the old way (7.7 s) than with NaraNews (16.3 s); kept as recorded.
