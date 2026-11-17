@@ -1,5 +1,11 @@
 # NaraNews — User Research Evidence (Pillar 1, Path B)
 
+> **SECONDARY evidence.** The team did not run the 5 one-to-one problem interviews ([interview-log.md](../interviews/interview-log.md)), so the problem is reviewed here from public online sources: 5 Pantip threads and 8 Google Play reviews (each with source link, post date, capture date, verbatim quote and screenshot) and a competitor check. Real-user data that supports it: the DISCOVER survey of 7 readers in Thailand ([survey-results.md](../survey-results.md)).
+>
+> **What it proves:** the pains are real, stated in Thai readers' own words, and long-standing — scattered sources (P2, strong: 6 sources) and wanting short summaries (P3, strong: 6 sources), with falling behind (P1) moderately supported; and no existing product combines Thai sources, one-line summaries, a Chrome popup and an email digest (section 3).
+>
+> **What it does not prove:** how many readers have these pains, or that NaraNews's own target users (Chrome users in Thailand, incl. MFU-area students) share them — posters and reviewers are self-selected, most threads are from 2015–2022, and most reviews are *positive* reviews of existing aggregators, so they also show the need is partly met already. The idle-state notification pain (P4) has only 1 source here and rests mainly on the survey.
+
 Path B = competitor analysis + community threads (Pantip, social, app-store reviews), each with a **screenshot, source URL and date**.
 Screenshots go in [screenshots/](screenshots/) named `B{n}-{yyyymmdd}.png` (date = day captured). Crop out usernames/avatars of private individuals (PDPA, rule.md).
 
