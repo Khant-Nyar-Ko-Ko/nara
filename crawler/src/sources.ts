@@ -1,7 +1,6 @@
 export interface FacebookNewsSource {
   id: string;
   name: string;
-  // Use Facebook page/profile URLs with apify/facebook-posts-scraper.
   facebookUrl: string;
 }
 
