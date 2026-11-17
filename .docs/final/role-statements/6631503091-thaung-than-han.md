@@ -6,4 +6,4 @@ I was the AI Lead and owned the news pipeline and the team's AI tooling. I built
 
 Evidence: commit [c863fb9](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/c863fb9) (crawler), [crawler/src/](../../../crawler/src/), [.claude/agents/](../../../.claude/agents/), [.claude/skills/](../../../.claude/skills/), [ai-logic.md](../ai-logic.md), Test Plan §6 roles.
 
-**AI disclosure:** _[Thaung to write: which AI tools you used, for what, and how you checked the output.]_
+**AI disclosure:** I used ChatGPT to help write the crawler code, design the Groq headline prompt and its JSON schema, and draft the Claude Code agent and skill definitions. Groq itself is part of the product, not a tool I used to write it. I checked the output by running the crawler on real news pages and comparing the saved headlines with the original posts, and by trying each agent on our real spec before the team used it. A first draft of this statement was prepared with Claude Code from the repo and edited by me.

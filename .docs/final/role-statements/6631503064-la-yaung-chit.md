@@ -6,4 +6,4 @@ I was responsible for quality. Because the DISCOVER spec had no numeric non-func
 
 Evidence: [nfr-results.md](../../04-test/nfr-results.md), [issue-log.md](../../04-test/issue-log.md), [uat-results.md](../../04-test/uat-results.md), [web/tests/auth.test.ts](../../../web/tests/auth.test.ts), commit [2a7ed85](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/2a7ed85) (digest popup frontend), Test Plan §6 roles.
 
-**AI disclosure:** _[La Yaung to write: which AI tools you used, for what, and how you checked the output.]_
+**AI disclosure:** I used ChatGPT, Gemini and GitHub Copilot to help draft the measurable NFR targets and the test scripts that measure them, and to word bug reports for the issue log. I checked the output by running every test myself and keeping only the targets and results that matched real measurements, and I reproduced each bug before logging it. A first draft of this statement was prepared with Claude Code from the repo and edited by me.
