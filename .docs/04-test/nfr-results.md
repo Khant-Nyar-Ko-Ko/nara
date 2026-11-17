@@ -6,7 +6,7 @@ The DISCOVER spec set no numeric NFRs, so QA set measurable targets in BUILD (sl
 |---|---|---|---|---|
 | Popup opens with the digest | < 2 s | 1.78 s (timed by the team in Chrome, 17 Nov 2026). API alone: median 1.18 s over 5 requests | **Pass** | [API timings](#api-response-time) |
 | Summary length (Thai headline fits one popup line) | one line; pass mark ≥ 90% of headlines | Before fix: 6 of 50. After fix: **16 of 16** | **Pass** (after fix) | [Summary length](#summary-length) |
-| Digest freshness (time between crawls, 07:00–21:00) | ≤ 3 h | Before fix: average 7.7 h, 0 of 40 gaps ≤ 3 h. After fix: being measured from 17 Nov | Fail → fix live, re-measuring | [Freshness](#digest-freshness) |
+| Digest freshness (time between crawls, 07:00–21:00) | ≤ 3 h | Before fix: average 7.7 h, 0 of 40 gaps ≤ 3 h. After fix (17 Nov): **4 of 4 gaps ≤ 3 h**, average 1.86 h, longest 2.00 h | **Pass** (after fix) | [Freshness](#digest-freshness) |
 | Auth: expired / forged / malformed token rejected | always | 4 of 4 unit tests pass (`web/tests/auth.test.ts`, run by CI on every PR) | **Pass** | `npm test --workspace web` |
 
 ## API response time
@@ -40,8 +40,11 @@ Method: [scripts/crawl-gaps.py](scripts/crawl-gaps.py) reads the GitHub Actions 
 |---|---|---|
 | Tue 17 Nov 13:33 | timer (manual test of the SQL) | — |
 | Tue 17 Nov 15:00 | timer (scheduled) | 1.45 h |
+| Tue 17 Nov 17:00 | timer (scheduled) | 2.00 h |
+| Tue 17 Nov 19:00 | timer (scheduled) | 2.00 h |
+| Tue 17 Nov 21:00 | timer (scheduled) | 2.00 h |
 
-This table is updated after tonight's runs (17:00, 19:00, 21:00). Night hours (21:00–07:00) are excluded on purpose: there are no night runs (team decision, 16 Nov).
+Result (measured 21:55, 17 Nov): **4 of 4 gaps at 3 h or less**; average 1.86 h; longest 2.00 h; every run succeeded and started on the minute. Night hours (21:00–07:00) are excluded on purpose: there are no night runs (team decision, 16 Nov). Limits: one evening; tomorrow morning's 07:00 and 09:00 runs can be added with the same command.
 
 ## Chrome Web Store installs
 

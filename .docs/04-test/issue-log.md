@@ -23,15 +23,19 @@ Sources: `git log`, GitHub Actions run logs (`gh run view <id> --log`).
 
 | ID | Seen in | Issue | Sev (moderator) | Status |
 |---|---|---|---|---|
-| UX-1 | U02, U03, U04 (interview) | No English/Burmese toggle in the popup; non-native readers used Chrome translate. Linked to the lowest UTAUT2 score (effort expectancy 3.92) | 1 | Open — next feature; the crawler already stores EN, TH and Burmese headlines |
+| UX-1 | U02, U03, U04, U07 (interview) | No English/Burmese toggle in the popup; non-native readers could not read the Thai headlines easily (U07: "couldn't read the Thai headlines, wanted English") and used Chrome translate | 1 | Open — next feature; the crawler already stores EN, TH and Burmese headlines |
 | UX-2 | U03 | Popup font is small for older eyes; browser zoom does not enlarge the popup | 1 | Open |
 | UX-3 | U02 | Paused ~8 s in T2 looking for a language switch | 1 | Open (same fix as UX-1) |
+| UX-4 | U06 | Got stuck on "Installation" (loading the extension) — no detail recorded | 2 (team rating; no moderator note) | Open — README and Web Store listing give the install steps; needs a check of where it went wrong |
+| UX-5 | U08 | Wants a search bar in topic selection; asks for clearer instructions | 1 (team rating) | Open |
+| UX-6 | U08 | T2 failed with NaraNews; T1 took as long as the old way (64.3 s vs 64.2 s, 3 tabs) | 2 (team rating) | Open — no moderator note on why; to review with the session recording |
+| UX-7 | U08 | Digest email arrived after 818.5 s (target ≤ 180 s); other 6 users 15–142 s | 2 (team rating) | Open — cause not yet known (possible causes: the 10-minute send cooldown after an earlier test email, or mail delay); check `access_log` for the 429/200 rows of that session |
 
-No severity 3–4 UX issue was seen, so the Test Plan's round-2 entry rule ("every severity 3–4 issue fixed and retested") had nothing to fix.
+No severity 3–4 UX issue was seen (moderator ratings for U02–U05; team ratings for U06–U08, which have no moderator notes), so the Test Plan's round-2 entry rule ("every severity 3–4 issue fixed and retested") had nothing to fix.
 
 ## Quality targets that failed and were fixed
 
 | NFR | Was | Fix | Now | Evidence |
 |---|---|---|---|---|
 | Summary length: one line in the popup | 6 of 50 Thai headlines fit one line | [957e0fb](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/957e0fb) Groq asked for ≤ 40 Thai characters, one retry over 45 | 16 of 16 new headlines fit one line | [nfr-results.md](nfr-results.md) |
-| Digest freshness: ≤ 3 h between crawls | average 7.7 h (41 runs, 3–16 Nov) | [a0857e7](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/a0857e7) Supabase pg_cron timer every 2 h, 07:00–21:00 | being measured from 17 Nov | [nfr-results.md](nfr-results.md) |
+| Digest freshness: ≤ 3 h between crawls | average 7.7 h (41 runs, 3–16 Nov) | [a0857e7](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/a0857e7) Supabase pg_cron timer every 2 h, 07:00–21:00 | 4 of 4 gaps ≤ 3 h, average 1.86 h (17 Nov) | [nfr-results.md](nfr-results.md) |
