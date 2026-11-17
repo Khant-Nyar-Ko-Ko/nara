@@ -51,7 +51,22 @@ function headlineValue(value: unknown, name: string): string {
   throw new Error(`Groq response missing ${name}`);
 }
 
-async function requestHeadlines(messages: ChatMessage[], config: GroqConfig): Promise<string> {
+// Groq's free tier allows 8,000 tokens a minute. On a 429 wait as long as it
+// asks ("try again in 6.2s"), up to 3 times, before giving up on the post.
+const MAX_RATE_LIMIT_RETRIES = 3;
+export let sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+export function setSleepForTests(fn: (ms: number) => Promise<void>) {
+  sleep = fn;
+}
+
+export function retryDelayMs(body: string): number {
+  const match = body.match(/try again in ([\d.]+)(ms|s)/i);
+  if (!match) return 10_000;
+  const ms = match[2].toLowerCase() === "ms" ? Number(match[1]) : Number(match[1]) * 1000;
+  return Math.min(Math.ceil(ms) + 500, 60_000);
+}
+
+async function requestHeadlines(messages: ChatMessage[], config: GroqConfig, attempt = 0): Promise<string> {
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -83,6 +98,11 @@ async function requestHeadlines(messages: ChatMessage[], config: GroqConfig): Pr
       messages,
     }),
   });
+
+  if (response.status === 429 && attempt < MAX_RATE_LIMIT_RETRIES) {
+    await sleep(retryDelayMs(await response.text()));
+    return requestHeadlines(messages, config, attempt + 1);
+  }
 
   if (!response.ok) {
     throw new Error(`Groq API failed: HTTP ${response.status} ${await response.text()}`);
@@ -159,13 +179,16 @@ export async function generateHeadlines(
 }
 
 export async function generateHeadlinesForPosts(posts: DedupedPost[]): Promise<HeadlinedPost[]> {
-  const results = await Promise.allSettled(posts.map((post) => generateHeadlines(post)));
-
-  return results.flatMap((result, index) => {
-    if (result.status === "fulfilled") return [result.value];
-
-    const reason = result.reason instanceof Error ? result.reason.message : result.reason;
-    console.error(`crawler: headline generation failed for ${posts[index].url}`, reason);
-    return [];
-  });
+  // One post at a time: sending all of them at once ran past Groq's per-minute
+  // token limit (2026-11-17 run: 7 of 15 posts failed with HTTP 429).
+  const headlined: HeadlinedPost[] = [];
+  for (const post of posts) {
+    try {
+      headlined.push(await generateHeadlines(post));
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : error;
+      console.error(`crawler: headline generation failed for ${post.url}`, reason);
+    }
+  }
+  return headlined;
 }

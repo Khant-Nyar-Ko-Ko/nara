@@ -3,6 +3,8 @@ import { afterEach, test } from "node:test";
 import {
   generateHeadlines,
   headlineLength,
+  retryDelayMs,
+  setSleepForTests,
   THAI_HEADLINE_MAX_CHARS,
 } from "../src/groqHeadlines.js";
 import type { DedupedPost } from "../src/types.js";
@@ -59,4 +61,29 @@ test("stops after one retry and keeps the shorter headline", async () => {
   assert.equal(bodies.length, 2);
   assert.equal(headlineLength(result.headline_th), 60);
   assert.ok(headlineLength(result.headline_th) > THAI_HEADLINE_MAX_CHARS);
+});
+
+test("waits and retries when Groq rate-limits", async () => {
+  const waits: number[] = [];
+  setSleepForTests(async (ms) => {
+    waits.push(ms);
+  });
+  let calls = 0;
+  globalThis.fetch = (async () => {
+    calls += 1;
+    if (calls === 1) {
+      return new Response('{"error":{"message":"Please try again in 6.2s."}}', { status: 429 });
+    }
+    const content = JSON.stringify({ headline_en: "EN", headline_th: "ข่าวสั้น", headline_mm: "MM", category: "Society" });
+    return new Response(JSON.stringify({ choices: [{ message: { content } }] }), { status: 200 });
+  }) as typeof fetch;
+  const result = await generateHeadlines(post, config);
+  assert.equal(calls, 2);
+  assert.deepEqual(waits, [6700]);
+  assert.equal(result.headline_th, "ข่าวสั้น");
+});
+
+test("reads millisecond waits from the 429 message", () => {
+  assert.equal(retryDelayMs("Please try again in 150ms."), 650);
+  assert.equal(retryDelayMs("no hint"), 10_000);
 });
