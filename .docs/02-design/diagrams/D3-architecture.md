@@ -15,7 +15,7 @@ flowchart LR
     end
 
     subgraph JOB["SCHEDULED JOB — GitHub Actions"]
-        Crawler["<b>Crawler</b><br/>runs every 3 h"]
+        Crawler["<b>Crawler</b><br/>runs every 2 h, 07–21 h<br/>(started by Supabase pg_cron)"]
     end
 
     DB[("<b>Database</b><br/>Supabase, Seoul<br/>news · users · user_contacts ·<br/>email_codes · consent_log · access_log")]
