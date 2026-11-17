@@ -3,7 +3,7 @@
 Guide: [interview-guide.md](interview-guide.md). Target: ≥5 by the gate, ≥15 overall.
 IDs only (R1, R2, …) — no names, emails, phone numbers or LINE IDs here (PDPA, rule.md).
 
-Progress: **7 / 5** — all 7 are **post-test interviews** (17 Nov 2026), not DISCOVER problem interviews (target 15)
+Progress: **8 / 5** — all 8 are **post-test interviews** (17 Nov 2026), not DISCOVER problem interviews (target 15)
 
 > **Status (17 Nov 2026): no one-to-one problem interviews were held during DISCOVER.** The guide above was prepared but not run before building. The pains P1–P4 come from (a) a **real-user survey** of 7 readers in Thailand — [../survey-results.md](../survey-results.md) — and (b) **SECONDARY** evidence: 5 Pantip threads and 8 Google Play reviews with links, dates and screenshots — [../research/path-b-user-research.md](../research/path-b-user-research.md).
 >
@@ -18,13 +18,14 @@ Progress: **7 / 5** — all 7 are **post-test interviews** (17 Nov 2026), not DI
 | R5 = U06 | 2026-11-17 | UAT moderator (team) | End of test session (mode not recorded) | not recorded | Liked: "Fast and Update" · Keep using: "Yes because fast" | P3 | Not stated (reads news mainly in Burmese) | No. Stuck on "Installation" |
 | R6 = U07 | 2026-11-17 | UAT moderator (team) | End of test session (mode not recorded) | not recorded | "I really like to look quicky." · "I want to keep using cuz it's so easy to find new news." | P3, P1 | Reads news rarely | No. Couldn't read the Thai headlines, wanted English |
 | R7 = U08 | 2026-11-17 | UAT moderator (team) | End of test session (mode not recorded) | not recorded | "It is easy but it would be better if you guys do more marketing and putting instructions in the marketing." | — | Reads news daily | Partly: T2 failed with NaraNews and T1 was no faster than the old way; wants a search bar in topic selection |
+| R8 = U09 | 2026-11-17 | UAT moderator (team) | End of test session (mode not recorded) | not recorded | "very appealing" · Keep using: "Yes. It is convenient" · Stuck: "Nowhere" | P3 | Reads news daily | No |
 
-## Summary per pain (7 post-test interviews + survey + SECONDARY)
+## Summary per pain (8 post-test interviews + survey + SECONDARY)
 
 | Pain | Supported by (interviews) | Contradicted by | Verdict |
 |------|---------------------------|-----------------|---------|
 | P1 falling behind | R4, R6 (weak: value getting new/latest news easily) | — | **Weak** in interviews; rests on the survey (6 of 7 sometimes miss news) and SECONDARY B1, B3 |
 | P2 scattered sources | R1, R2, R3 (ads and clutter across sites vs "one neat list") | — | **Supported** (also survey: 4 of 7 check 2+ sites; SECONDARY: 6 sources) |
-| P3 effort to get through the news | R2 ("saves me time every morning"), R3 ("under a minute"), R5 ("fast"), R6 ("look quickly") | R4, R7 partly (T2 faster the old way; R7's T1 no faster) | **Supported** (also survey and SECONDARY: 6 sources) |
+| P3 effort to get through the news | R2 ("saves me time every morning"), R3 ("under a minute"), R5 ("fast"), R6 ("look quickly"), R8 ("convenient") | R4, R7 partly (T2 faster the old way; R7's T1 no faster) | **Supported** (also survey and SECONDARY: 6 sources) |
 | P4 news when away from Chrome | R1, R2, R3 (value the email digest on the phone when away) | — | **Supported for the email channel** (F3); Chrome notifications (F5) not tested |
 | New: language | R1, R2, R3, R6 ask for English (and Burmese) headlines | — | New need, not in the backlog yet — [issue-log.md](../../04-test/issue-log.md) UX-1 |
