@@ -18,14 +18,18 @@ Phase: BUILD (month 2+). DISCOVER (W1–W5) is complete; requirement specs and b
 .claude/agents/backlog-auditor.md       — read-only backlog/spec traceability audit (heavy lifting)
 .claude/skills/capture-requirement/     — /capture-requirement, thin entry point -> requirement-writer
 .claude/skills/audit-backlog/           — /audit-backlog, thin entry point -> backlog-auditor
+.docs/00-charter.md                     — company charter (members, roles, team rules)
 .docs/00-proposal.md                    — updated proposal (problem statement + target users)
 .docs/01-requirements/01-spec/{YYYYMMDD}-{no}-{topic}.md — requirement specs
 .docs/01-requirements/backlog.md        — product backlog
-.docs/02-design/                        — design draft: feature-list, user-journey, prototype, diagrams/ (4 diagrams)
+.docs/02-design/                        — design draft: feature-list, user-journey, prototype, diagrams/ (6 diagrams: D1 context, D2 use case, D3 architecture, D4 activity, D5 sequence, D6 ER)
+.docs/04-test/                          — Test Plan, UAT session logs (codes only), results, issue log, NFR data + scripts
+.docs/final/                            — final deliverables + README index for grading (case study, AI logic, comparison table, role statements)
 .docs/05-log/{YYYYMMDD}-log.md          — daily log of agent/human changes
 rule.md                                 — legal & compliance rules (PDPA, CCA §26, ETA §9/26/28)
-extension/                              — Chrome extension (Manifest V3, Vite+React). BUILD-phase scaffold — files are TODO stubs until implemented.
-web/                                    — Next.js full-stack backend (fetch/summarize/dispatch). BUILD-phase: cross-cutting infra (db.ts, logging.ts, middleware.ts) implemented; route handlers remain TODO stubs until implemented.
+extension/                              — Chrome extension (Manifest V3, Vite+React): popup digest, options/sign-in, background worker (email when away). Published on the Chrome Web Store.
+web/                                    — Next.js website + REST API on Vercel: digest, emailed-code sign-in, consent, email dispatch, hash-chained access log.
+crawler/                                — Apify + Groq crawler, run by GitHub Actions and started every 2 h by a Supabase timer.
 
 ## Rules that always apply
 - Read rule.md before touching anything involving personal data, logs, consent, or signatures. Never disable or "temporarily skip" a rule in it.

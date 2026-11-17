@@ -9,6 +9,8 @@ Tools: **Mermaid** for D1, D3 and D4 (source is in the `.md`) and **PlantUML** f
 | D2 | Use Case | [D2-use-case.puml](D2-use-case.puml) (notes in [D2-use-case.md](D2-use-case.md)) | [png](D2-use-case.png) | 3 actors (Thai news reader, Email service, Thai news websites), each linked to its use cases · 7 use cases · core ★ at the top · 2 «include» (sign-in, consent) + 1 «extend» (open article) |
 | D3 | Architecture | [D3-architecture.md](D3-architecture.md) (Mermaid) | renders in the .md | 3 layers (client · server · database) + outside services · arrows = who calls whom · `access_log` + `consent_log` shown (rule.md) |
 | D4 | Activity | [D4-activity.md](D4-activity.md) (Mermaid) | renders in the .md | One scenario = [user-journey.md](../user-journey.md) in the same order · ● start → actions → ◆ decision [yes]/[no — away] → ◆ merge → ◉ end |
+| D5 | Sequence | [D5-sequence-email-digest.md](D5-sequence-email-digest.md) (Mermaid) | renders in the .md | Email digest when away: Chrome idle → background worker → API checks (session, cooldown, verified email, consent) → Gmail → inbox; access_log row (added 17 Nov 2026, drawn from the built code) |
+| D6 | ER | [D6-er.md](D6-er.md) (Mermaid) | renders in the .md | All 6 tables with keys and relations: users, user_contacts, consent_log, access_log, email_codes, news (added 17 Nov 2026, from `web/lib/db.ts` and the crawler) |
 
 ## Tech stack (what D3 must match)
 

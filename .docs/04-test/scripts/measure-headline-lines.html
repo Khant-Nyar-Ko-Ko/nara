@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+  Summary length NFR: how many lines each Thai headline takes in the popup.
+  Renders every headline at the popup's text width (328 px = 360 px popup minus
+  padding) in the popup's headline font (700 15px/1.2 Arial, from
+  extension/src/popup/Popup.css) and counts lines as height / 18 px.
+
+  Run from the .docs/04-test folder:
+    python3 -m http.server 8000
+  then open
+    http://localhost:8000/scripts/measure-headline-lines.html?file=../data/headlines-before.csv
+    http://localhost:8000/scripts/measure-headline-lines.html?file=../data/headlines-after.csv
+-->
+<meta charset="utf-8">
+<title>Headline line count</title>
+<style>
+  body { font: 14px system-ui, sans-serif; margin: 16px; }
+  .box { width: 328px; border: 1px dashed #aaa; }
+  .box h2 { margin: 0 0 6px; font: 700 15px/1.2 Arial, sans-serif; }
+  table { border-collapse: collapse; margin-top: 16px; }
+  td, th { border: 1px solid #ccc; padding: 2px 6px; }
+</style>
+<p id="summary">Loading…</p>
+<div class="box" id="box"></div>
+<table id="out"><tr><th>#</th><th>Characters</th><th>Lines</th><th>Headline</th></tr></table>
+<script>
+function parseCsv(text) {
+  const rows = []; let row = [], cell = "", quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
+      else if (c === '"') quoted = false;
+      else cell += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ",") { row.push(cell); cell = ""; }
+    else if (c === "\n") { row.push(cell); rows.push(row); row = []; cell = ""; }
+    else if (c !== "\r") cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+(async () => {
+  const file = new URLSearchParams(location.search).get("file") || "../data/headlines-after.csv";
+  const rows = parseCsv(await (await fetch(file)).text());
+  const col = rows[0].indexOf("headline_th");
+  const headlines = rows.slice(1).map((r) => r[col]).filter(Boolean);
+  const box = document.getElementById("box");
+  for (const h of headlines) { const el = document.createElement("h2"); el.textContent = h; box.appendChild(el); }
+  await document.fonts.ready;
+  const lines = [...box.children].map((el) => Math.round(el.getBoundingClientRect().height / 18));
+  const out = document.getElementById("out");
+  headlines.forEach((h, i) => {
+    const tr = out.insertRow();
+    [i + 1, [...h].length, lines[i], h].forEach((v) => { tr.insertCell().textContent = v; });
+  });
+  const one = lines.filter((n) => n === 1).length;
+  document.getElementById("summary").textContent =
+    `${file}: ${one} of ${lines.length} headlines fit one line (${Math.round(100 * one / lines.length)}%).`;
+})();
+</script>
