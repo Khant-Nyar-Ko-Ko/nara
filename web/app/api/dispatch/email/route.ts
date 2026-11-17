@@ -8,14 +8,8 @@ import { withAccessLog } from "@/lib/logging";
 import { resolveSession, isEmailVerified, hasActiveConsent, EMAIL_FALLBACK_CONSENT_PURPOSE } from "@/lib/auth";
 import { query } from "@/lib/db";
 import { readDigest } from "@/lib/news";
-import { escapeHtml, sendEmail } from "@/lib/email";
-
-function renderDigestHtml(items: { summary: string; url: string; source: string }[]): string {
-  const rows = items
-    .map((item) => `<li><a href="${escapeHtml(item.url)}">${escapeHtml(item.summary)}</a> — <small>${escapeHtml(item.source)}</small></li>`)
-    .join("");
-  return `<h1>Your NaraNews digest</h1><ul>${rows}</ul>`;
-}
+import { sendEmail } from "@/lib/email";
+import { digestEmail } from "@/lib/digestEmail";
 
 const DISPATCH_COOLDOWN_MINUTES = 10;
 
@@ -54,7 +48,8 @@ export const POST = withAccessLog(async function POST(req: NextRequest) {
   const items = await readDigest("th");
 
   try {
-    await sendEmail(contact.email, "Your NaraNews digest", renderDigestHtml(items));
+    const { subject, html } = digestEmail(items, contact.email);
+    await sendEmail(contact.email, subject, html);
   } catch (err) {
     console.error("email dispatch failed", err instanceof Error ? err.message : err);
     return Response.json({ error: "dispatch failed" }, { status: 502 });
