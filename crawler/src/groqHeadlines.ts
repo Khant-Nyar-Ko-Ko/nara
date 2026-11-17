@@ -1,5 +1,10 @@
 import { getGroqConfig, type GroqConfig } from "./config.js";
-import { NEWS_CATEGORIES, type DedupedPost, type HeadlinedPost, type NewsCategory } from "./types.js";
+import {
+  NEWS_CATEGORIES,
+  type DedupedPost,
+  type HeadlinedPost,
+  type NewsCategory,
+} from "./types.js";
 
 interface GroqChatResponse {
   choices?: Array<{
@@ -16,14 +21,9 @@ interface GroqHeadlineResponse {
   category?: unknown;
 }
 
-// The popup shows the Thai headline at 360 px wide in 15 px bold Arial. Measured on
-// 50 live headlines (2026-11-17): up to 47 characters fit one line, 49+ wrapped.
-// Ask for 40 to leave a margin; anything over 45 gets one stricter retry.
 export const THAI_HEADLINE_TARGET_CHARS = 40;
 export const THAI_HEADLINE_MAX_CHARS = 45;
 
-// Counts code points, so Thai vowel and tone marks count as characters,
-// the same way the popup measurement counted them.
 export function headlineLength(text: string): number {
   return [...text].length;
 }
@@ -51,10 +51,9 @@ function headlineValue(value: unknown, name: string): string {
   throw new Error(`Groq response missing ${name}`);
 }
 
-// Groq's free tier allows 8,000 tokens a minute. On a 429 wait as long as it
-// asks ("try again in 6.2s"), up to 3 times, before giving up on the post.
 const MAX_RATE_LIMIT_RETRIES = 3;
-export let sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+export let sleep = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 export function setSleepForTests(fn: (ms: number) => Promise<void>) {
   sleep = fn;
 }
@@ -62,45 +61,57 @@ export function setSleepForTests(fn: (ms: number) => Promise<void>) {
 export function retryDelayMs(body: string): number {
   const match = body.match(/try again in ([\d.]+)(ms|s)/i);
   if (!match) return 10_000;
-  const ms = match[2].toLowerCase() === "ms" ? Number(match[1]) : Number(match[1]) * 1000;
+  const ms =
+    match[2].toLowerCase() === "ms"
+      ? Number(match[1])
+      : Number(match[1]) * 1000;
   return Math.min(Math.ceil(ms) + 500, 60_000);
 }
 
-async function requestHeadlines(messages: ChatMessage[], config: GroqConfig, attempt = 0): Promise<string> {
-  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${config.apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: config.model,
-      temperature: 0.2,
-      reasoning_effort: "low",
-      response_format: {
-        type: "json_schema",
-        json_schema: {
-          name: "facebook_post_headlines",
-          strict: true,
-          schema: {
-            type: "object",
-            properties: {
-              headline_en: { type: "string" },
-              headline_th: { type: "string" },
-              headline_mm: { type: "string" },
-              // No enum here: Groq rejects the whole answer when the model picks a
-              // category outside the list (2026-11-17: "Technology"), losing the post.
-              // categoryValue() maps anything unknown to "Other" instead.
-              category: { type: "string" },
+async function requestHeadlines(
+  messages: ChatMessage[],
+  config: GroqConfig,
+  attempt = 0,
+): Promise<string> {
+  const response = await fetch(
+    "https://api.groq.com/openai/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: config.model,
+        temperature: 0.2,
+        reasoning_effort: "low",
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "facebook_post_headlines",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                headline_en: { type: "string" },
+                headline_th: { type: "string" },
+                headline_mm: { type: "string" },
+                category: { type: "string" },
+              },
+              required: [
+                "headline_en",
+                "headline_th",
+                "headline_mm",
+                "category",
+              ],
+              additionalProperties: false,
             },
-            required: ["headline_en", "headline_th", "headline_mm", "category"],
-            additionalProperties: false,
           },
         },
-      },
-      messages,
-    }),
-  });
+        messages,
+      }),
+    },
+  );
 
   if (response.status === 429 && attempt < MAX_RATE_LIMIT_RETRIES) {
     await sleep(retryDelayMs(await response.text()));
@@ -108,7 +119,9 @@ async function requestHeadlines(messages: ChatMessage[], config: GroqConfig, att
   }
 
   if (!response.ok) {
-    throw new Error(`Groq API failed: HTTP ${response.status} ${await response.text()}`);
+    throw new Error(
+      `Groq API failed: HTTP ${response.status} ${await response.text()}`,
+    );
   }
 
   const data = (await response.json()) as GroqChatResponse;
@@ -175,22 +188,27 @@ export async function generateHeadlines(
   const retry = toHeadlinedPost(post, retryContent);
   const retryLength = headlineLength(retry.headline_th);
   if (retryLength > THAI_HEADLINE_MAX_CHARS) {
-    console.warn(`crawler: Thai headline still ${retryLength} characters after retry for ${post.url}`);
+    console.warn(
+      `crawler: Thai headline still ${retryLength} characters after retry for ${post.url}`,
+    );
   }
 
   return retryLength <= firstLength ? retry : first;
 }
 
-export async function generateHeadlinesForPosts(posts: DedupedPost[]): Promise<HeadlinedPost[]> {
-  // One post at a time: sending all of them at once ran past Groq's per-minute
-  // token limit (2026-11-17 run: 7 of 15 posts failed with HTTP 429).
+export async function generateHeadlinesForPosts(
+  posts: DedupedPost[],
+): Promise<HeadlinedPost[]> {
   const headlined: HeadlinedPost[] = [];
   for (const post of posts) {
     try {
       headlined.push(await generateHeadlines(post));
     } catch (error) {
       const reason = error instanceof Error ? error.message : error;
-      console.error(`crawler: headline generation failed for ${post.url}`, reason);
+      console.error(
+        `crawler: headline generation failed for ${post.url}`,
+        reason,
+      );
     }
   }
   return headlined;

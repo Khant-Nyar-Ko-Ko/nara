@@ -5,8 +5,6 @@ export interface ApifyCrawlerConfig {
   facebookPostsActorId: string;
   facebookPagesActorId: string;
   resultsLimit: number;
-  // Memory per Actor run. All sources start at once, and Apify's free plan caps
-  // the total at 16 GB; the Actor's 4 GB default let only 4 of 5 sources start.
   actorMemoryMbytes: number;
 }
 
@@ -48,7 +46,9 @@ export function getApifyCrawlerConfig(): ApifyCrawlerConfig {
       process.env.APIFY_FACEBOOK_POSTS_ACTOR_ID ??
       process.env.APIFY_FACEBOOK_ACTOR_ID ??
       "apify/facebook-posts-scraper",
-    facebookPagesActorId: process.env.APIFY_FACEBOOK_PAGES_ACTOR_ID ?? "apify/facebook-pages-scraper",
+    facebookPagesActorId:
+      process.env.APIFY_FACEBOOK_PAGES_ACTOR_ID ??
+      "apify/facebook-pages-scraper",
     resultsLimit: numberEnv("APIFY_FACEBOOK_RESULTS_LIMIT", 1),
     actorMemoryMbytes: numberEnv("APIFY_ACTOR_MEMORY_MB", 1024),
   };
