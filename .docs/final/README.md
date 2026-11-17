@@ -36,6 +36,7 @@ Labels: **REAL** = data from real users · **SECONDARY** = published/online evid
 |---|---|
 | Test Plan | [../04-test/test-plan.pdf](../04-test/test-plan.pdf) |
 | Session logs of real users U02–U05 (**REAL**, codes only, identifying details removed) | [../04-test/uat-sessions.md](../04-test/uat-sessions.md) |
+| Video recording of session U05 (Zoom, 17 Nov) — kept on the team drive, not linked here because it shows a real participant (Test Plan §4, PDPA); shown to the instructor on request | noted under U05 in [uat-sessions.md](../04-test/uat-sessions.md#u05) |
 | Before / After for every MUST task | [../04-test/uat-results.md](../04-test/uat-results.md) |
 | SUS and UTAUT2 responses and results | [../04-test/uat-sessions.md](../04-test/uat-sessions.md#questionnaire-answers-15), [../04-test/uat-results.md](../04-test/uat-results.md) |
 | Issue log (severity, fix commit, retest) | [../04-test/issue-log.md](../04-test/issue-log.md) |
