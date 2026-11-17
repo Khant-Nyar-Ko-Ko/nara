@@ -88,7 +88,10 @@ async function requestHeadlines(messages: ChatMessage[], config: GroqConfig, att
               headline_en: { type: "string" },
               headline_th: { type: "string" },
               headline_mm: { type: "string" },
-              category: { type: "string", enum: [...NEWS_CATEGORIES] },
+              // No enum here: Groq rejects the whole answer when the model picks a
+              // category outside the list (2026-11-17: "Technology"), losing the post.
+              // categoryValue() maps anything unknown to "Other" instead.
+              category: { type: "string" },
             },
             required: ["headline_en", "headline_th", "headline_mm", "category"],
             additionalProperties: false,

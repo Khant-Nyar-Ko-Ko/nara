@@ -87,3 +87,12 @@ test("reads millisecond waits from the 429 message", () => {
   assert.equal(retryDelayMs("Please try again in 150ms."), 650);
   assert.equal(retryDelayMs("no hint"), 10_000);
 });
+
+test("maps an unknown category to Other instead of failing", async () => {
+  globalThis.fetch = (async () => {
+    const content = JSON.stringify({ headline_en: "EN", headline_th: "ข่าวสั้น", headline_mm: "MM", category: "Technology" });
+    return new Response(JSON.stringify({ choices: [{ message: { content } }] }), { status: 200 });
+  }) as typeof fetch;
+  const result = await generateHeadlines(post, config);
+  assert.equal(result.category, "Other");
+});
