@@ -35,7 +35,7 @@ Labels: **REAL** = data from real users · **SECONDARY** = published/online evid
 | Item | File |
 |---|---|
 | Test Plan | [../04-test/test-plan.pdf](../04-test/test-plan.pdf) |
-| Session logs of real users U02–U05 (**REAL**, codes only, identifying details removed) | [../04-test/uat-sessions.md](../04-test/uat-sessions.md) |
+| Session logs of real users U02–U08 (**REAL**, codes only, identifying details removed) | [../04-test/uat-sessions.md](../04-test/uat-sessions.md) |
 | Video recordings of user-test sessions (Zoom; one file per participant code, e.g. "Test with U05.mp4"; anyone with the link can view) | [UAT testing folder](https://drive.google.com/drive/folders/1XzGAdkjOFNaBSmLgpRmuuaqxw0jHqASo) on Google Drive, listed in [uat-sessions.md](../04-test/uat-sessions.md) |
 | Before / After for every MUST task | [../04-test/uat-results.md](../04-test/uat-results.md) |
 | SUS and UTAUT2 responses and results | [../04-test/uat-sessions.md](../04-test/uat-sessions.md#questionnaire-answers-15), [../04-test/uat-results.md](../04-test/uat-results.md) |
