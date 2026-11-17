@@ -38,4 +38,4 @@ No severity 3–4 UX issue was seen (moderator ratings for U02–U05; team ratin
 | NFR | Was | Fix | Now | Evidence |
 |---|---|---|---|---|
 | Summary length: one line in the popup | 6 of 50 Thai headlines fit one line | [957e0fb](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/957e0fb) Groq asked for ≤ 40 Thai characters, one retry over 45 | 16 of 16 new headlines fit one line | [nfr-results.md](nfr-results.md) |
-| Digest freshness: ≤ 3 h between crawls | average 7.7 h (41 runs, 3–16 Nov) | [a0857e7](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/a0857e7) Supabase pg_cron timer every 2 h, 07:00–21:00 | being measured from 17 Nov | [nfr-results.md](nfr-results.md) |
+| Digest freshness: ≤ 3 h between crawls | average 7.7 h (41 runs, 3–16 Nov) | [a0857e7](https://github.com/Khant-Nyar-Ko-Ko/nara/commit/a0857e7) Supabase pg_cron timer every 2 h, 07:00–21:00 | 4 of 4 gaps ≤ 3 h, average 1.86 h (17 Nov) | [nfr-results.md](nfr-results.md) |

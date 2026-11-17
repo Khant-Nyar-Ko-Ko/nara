@@ -28,7 +28,7 @@ Evidence:
 
 - **Faster catch-up:** finding the 3 biggest stories took 17 s with NaraNews vs 58.5 s on the usual sites (−71%; 6 of 7 faster, p = 0.031). Opening the full article did **not** meet the target: 24 s vs 15.2 s by median (5 of 7 were faster, not significant), because on their usual site the article was often one click away. 7 of 7 completed T1, T3 and T4 without help; T2 6 of 7.
 - **Usable and wanted:** SUS 84.3 (target 68); UTAUT2 performance 4.43, ease of use 4.28 and intention 4.33 all met the 4.0 target; social influence was lowest (3.86).
-- **Quality:** popup opens in 1.78 s (< 2 s); Thai headlines now fit one popup line 16 of 16 (was 6 of 50) after we changed the AI prompt; crawls were moved from GitHub's unreliable scheduler to a database timer (was 7.7 h between crawls on average; re-measuring, target ≤ 3 h); 10 bugs found and fixed, 0 open.
+- **Quality:** popup opens in 1.78 s (< 2 s); Thai headlines now fit one popup line 16 of 16 (was 6 of 50) after we changed the AI prompt; crawls were moved from GitHub's unreliable scheduler to a database timer: the gap between crawls fell from 7.7 h on average to 1.86 h (4 of 4 gaps ≤ 3 h); 10 bugs found and fixed, 0 open.
 - **Compliance:** every API request logged in a tamper-evident chain kept ≥ 90 days; email digest only after verified sign-in and recorded consent; email used for nothing else.
 
 Full numbers with sources: [comparison-table.md](comparison-table.md). AI details: [ai-logic.md](ai-logic.md).

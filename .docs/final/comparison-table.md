@@ -19,7 +19,7 @@ Every row has a source file. "Before" for user tasks = the participant's usual n
 | **AI: headlines in all 3 languages** | — | 50 of 50 | — | count of live API | [headlines-languages-2026-11-17.csv](../04-test/data/headlines-languages-2026-11-17.csv) |
 | **AI: posts lost per crawl to model errors** | 8 of 15 | 0 of 1 (after both fixes) | fixed | GitHub Actions logs | [issue-log.md](../04-test/issue-log.md) B09–B10 |
 | Popup opens with digest | — | 1.78 s | target < 2 s met | timed in Chrome | nfr-results.md |
-| Digest freshness (hours between crawls, 07:00–21:00) | 7.67 h average (41 runs) | timer every 2 h; first gap 1.45 h, more measured tonight | target ≤ 3 h — re-measuring | GitHub Actions history, [crawl-gaps.py](../04-test/scripts/crawl-gaps.py) | nfr-results.md |
+| Digest freshness (hours between crawls, 07:00–21:00) | 7.67 h average (41 runs); 0 of 40 gaps ≤ 3 h | 1.86 h average; 4 of 4 gaps ≤ 3 h (17 Nov, 13:33–21:00) | target ≤ 3 h met | GitHub Actions history, [crawl-gaps.py](../04-test/scripts/crawl-gaps.py) | nfr-results.md |
 | Silent crawl failures | 13 runs "success" with nothing saved (12–16 Nov) | a failed source turns the run red | fixed | Actions logs | issue-log.md B06 |
 | Bugs | 10 found | 10 fixed, 0 open | — | git log | issue-log.md |
 | Real users of the store listing | — | 6 installs with a browser language, all in Thailand (302 total; 272 from one region with no browser language excluded) | — | Chrome Web Store export | [store-installs CSV](../04-test/data/store-installs-2026-11-03_14.csv) |
