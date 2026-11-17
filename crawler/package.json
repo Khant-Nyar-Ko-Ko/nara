@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "crawl:manual": "tsx src/manualCrawl.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.109.0",

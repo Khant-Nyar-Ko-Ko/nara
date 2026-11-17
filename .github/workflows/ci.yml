@@ -32,8 +32,10 @@ jobs:
       - name: Typecheck (extension, web, crawler)
         run: npm run typecheck --workspaces
 
-      - name: Test (web)
-        run: npm test --workspace web
+      - name: Test (web, crawler)
+        run: |
+          npm test --workspace web
+          npm test --workspace crawler
 
       - name: Build extension
         run: npm run build --workspace extension
