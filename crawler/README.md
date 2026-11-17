@@ -32,7 +32,7 @@ One manual run crawls one latest post from each source in `src/sources.ts`, dedu
 
 ## Scheduled Crawl
 
-`.github/workflows/crawl.yml` runs the same crawl every 3 hours (UTC) on GitHub Actions, and can also be started by hand from the repo's **Actions** tab ("Crawl news" → **Run workflow**). It needs these repository secrets (Settings → Secrets and variables → Actions): `APIFY_TOKEN`, `GROQ_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`. The other variables use their defaults.
+`.github/workflows/crawl.yml` runs the same crawl on GitHub Actions every 2 hours, 07:00–21:00 Thailand time. A Supabase `pg_cron` job starts it on time (`sql/002_crawl_timer.sql`; GitHub's own cron skipped or delayed most runs). It can also be started by hand from the repo's **Actions** tab ("Crawl news" → **Run workflow**). It needs these secrets in the `nara-keys` environment (Settings → Environments): `APIFY_TOKEN`, `GROQ_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`. The other variables use their defaults.
 
 If Groq fails for a post, only that post is skipped; it isn't stored, so the next run retries it.
 

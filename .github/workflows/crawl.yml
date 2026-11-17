@@ -1,12 +1,13 @@
 name: Crawl news
 
 on:
-  schedule:
-    # Every 3 hours, 07:00–22:00 Thailand time (UTC+7); no night runs (2026-11-16).
-    # Each run keeps only the latest APIFY_FACEBOOK_RESULTS_LIMIT posts per source,
-    # so posts beyond that within a gap (notably the 9-hour overnight one) are missed.
-    # 5 sources x 3 posts x 6 runs = up to 90 posts/day (was 2 x 5 x 8 = 80).
-    - cron: "0 0,3,6,9,12,15 * * *"
+  # Started by the Supabase pg_cron job in crawler/sql/002_crawl_timer.sql
+  # every 2 hours, 07:00–21:00 Thailand time (UTC+7); no night runs. GitHub's
+  # own `schedule:` was removed on 2026-11-17: it skipped about 2 of every 3
+  # runs and delayed the rest by up to 4 h (gaps of 4–18 h).
+  # Each run keeps only the latest APIFY_FACEBOOK_RESULTS_LIMIT posts per source,
+  # so posts beyond that within a gap (notably the 10-hour overnight one) are missed.
+  # 5 sources x 3 posts x 8 runs = up to 120 posts/day (was 90).
   workflow_dispatch:
 
 permissions:

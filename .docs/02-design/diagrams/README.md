@@ -18,7 +18,7 @@ Taken from the code on branch `knkk`, 2026-10-01.
 |-------|-----------|-------|
 | Client | Chrome extension, Manifest V3, Vite + React. Popup, Options page, service worker (`chrome.alarms` polls every 15 min, `chrome.idle` triggers the email) | `extension/` |
 | Backend | Next.js API routes: `/api/digest`, `/api/auth/request-code`, `/api/auth/verify-code`, `/api/consent`, `/api/dispatch/email`; every route is wrapped by the access log (LR2) | `web/` |
-| Ingestion | Crawler on GitHub Actions every 3 h. Apify `facebook-posts-scraper` reads Thai outlets' Facebook pages (Bangkok Post, Khaosod English), and Groq writes the one-line headline + category | `crawler/` |
+| Ingestion | Crawler on GitHub Actions every 2 h, 07:00–21:00 Thailand time, started by a Supabase pg_cron timer. Apify `facebook-posts-scraper` reads Thai outlets' Facebook pages (Bangkok Post, Khaosod English), and Groq writes the one-line headline + category | `crawler/` |
 | Data | Supabase Postgres, Seoul (ap-northeast-2), temporary. Tables: `news`, `users`, `user_contacts`, `email_codes`, `consent_log`, `access_log` | `web/sql/`, `crawler/sql/` |
 | Email | Resend, used for the sign-in code (LR3) and the digest (F3) | `web/lib/email.ts` |
 
