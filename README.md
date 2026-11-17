@@ -2,6 +2,7 @@
 
 Every Thai headline, one clean list. A Chrome extension that gathers Thai news into one digest of one-line headlines — a popup while you're browsing, an email when you're away.
 
+- **Chrome Web Store** https://chromewebstore.google.com/detail/lopcmohkfgbkdpemnjdlfojeahmkjanb?utm_source=item-share-cb
 - **Live site:** https://nara-news.vercel.app
 - **Course:** 1305493 SE Case Studies, 1/2569 (ADT, MFU) · Team: Khant Nyar Ko Ko, La Yaung Chit, Lin Htet Aung, Thaung Than Han, Moe Mya Myintzu
 - **Project index for grading (Discover → Deliver):** [.docs/final/README.md](.docs/final/README.md)
