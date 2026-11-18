@@ -27,11 +27,11 @@ Sources: `git log`, GitHub Actions run logs (`gh run view <id> --log`).
 | UX-2 | U03 | Popup font is small for older eyes; browser zoom does not enlarge the popup | 1 | Open |
 | UX-3 | U02 | Paused ~8 s in T2 looking for a language switch | 1 | Open (same fix as UX-1) |
 | UX-4 | U06 | Got stuck on "Installation" (loading the extension) — no detail recorded | 2 (team rating; no moderator note) | Open — README and Web Store listing give the install steps; needs a check of where it went wrong |
-| UX-5 | U08 | Wants a search bar in topic selection; asks for clearer instructions | 1 (team rating) | Open |
+| UX-5 | U08, U10 | Wants a search bar in topic selection; asks for clearer instructions (U08). U10 got stuck "at the start" (no detail recorded) | 1 (team rating) | Open |
 | UX-6 | U08 | T2 failed with NaraNews; T1 took as long as the old way (64.3 s vs 64.2 s, 3 tabs) | 2 (team rating) | Open — no moderator note on why; to review with the session recording |
-| UX-7 | U08 | Digest email arrived after 818.5 s (target ≤ 180 s); other 6 users 15–142 s | 2 (team rating) | Open — cause not yet known (possible causes: the 10-minute send cooldown after an earlier test email, or mail delay); check `access_log` for the 429/200 rows of that session |
+| UX-7 | U08, U10 | Digest email arrived after 818.5 s (U08) and 218.3 s (U10) (target ≤ 180 s); other 7 users 15–142 s | 2 (team rating) | Open — cause not yet known (possible causes: the 10-minute send cooldown after an earlier test email, or mail delay); check `access_log` for the 429/200 rows of that session |
 
-No severity 3–4 UX issue was seen (moderator ratings for U02–U05; team ratings for U06–U08, which have no moderator notes), so the Test Plan's round-2 entry rule ("every severity 3–4 issue fixed and retested") had nothing to fix.
+No severity 3–4 UX issue was seen (moderator ratings for U02–U05; team ratings for U06–U10, which have no moderator notes), so the Test Plan's round-2 entry rule ("every severity 3–4 issue fixed and retested") had nothing to fix.
 
 ## Quality targets that failed and were fixed
 

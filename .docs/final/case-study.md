@@ -21,13 +21,13 @@ Evidence:
 | DISCOVER (W1–W5) | Survey, Pantip/app-review research, pains P1–P4, requirements as user stories with MoSCoW, legal requirements from Thai law | [proposal](../00-proposal.md), [spec](../01-requirements/01-spec/20260902-01-news-digest.md), [backlog](../01-requirements/backlog.md) (MUST: F1, F2, F3 + LR1–LR4), [rule.md](../../rule.md) |
 | DESIGN | Design system, 3-screen prototype, 6 diagrams checked against the spec by an AI checker agent | [design-system.md](../02-design/design-system.md), [prototype/](../02-design/prototype/), [diagrams D1–D6](../02-design/diagrams/README.md) |
 | BUILD | Chrome extension (MV3), Next.js REST API on Vercel, Supabase Postgres (Seoul), crawler (Apify → Groq) on GitHub Actions, Gmail SMTP; compliance built in: hash-chained access log (CCA §26), verified email sign-in, recorded consent (ETA), purpose-limited email (PDPA) | [README.md](../../README.md), source in `extension/`, `web/`, `crawler/` |
-| TEST | Test Plan; QA-defined NFR targets; unit tests in CI; UAT with 8 real users (tasks T1–T5, SUS, UTAUT2, interview) | [test-plan.pdf](../04-test/test-plan.pdf), [uat-results.md](../04-test/uat-results.md), [nfr-results.md](../04-test/nfr-results.md), [issue-log.md](../04-test/issue-log.md) |
+| TEST | Test Plan; QA-defined NFR targets; unit tests in CI; UAT with 9 real users (tasks T1–T5, SUS, UTAUT2, interview) | [test-plan.pdf](../04-test/test-plan.pdf), [uat-results.md](../04-test/uat-results.md), [nfr-results.md](../04-test/nfr-results.md), [issue-log.md](../04-test/issue-log.md) |
 | DELIVER | Published on the Chrome Web Store and Vercel; fixed the two failed NFRs before the final | this folder |
 
 ## 3. Outcome
 
-- **Faster catch-up:** finding the 3 biggest stories took 17.4 s with NaraNews vs 61.3 s on the usual sites (−72%; 7 of 8 faster, p = 0.016). Opening the full article was faster (25.7 s vs 31.1 s, −18%; 6 of 8 faster) but did **not** reach the 30% target, because on their usual site the article was often one click away. 8 of 8 completed T1, T3 and T4 without help; T2 7 of 8.
-- **Usable and wanted:** SUS 86.3 (target 68); UTAUT2 performance 4.50, ease of use 4.38 and intention 4.42 all met the 4.0 target; social influence was lowest (4.00).
+- **Faster catch-up:** finding the 3 biggest stories took 17.8 s with NaraNews vs 64 s on the usual sites (−72%; 8 of 9 faster, p = 0.008). Opening the full article was 27.3 s vs 47 s by median (−42%), which meets the Test Plan's 30% rule, but only 6 of 9 were faster and it is not significant (p = 0.43), so we do not claim it. 9 of 9 completed T1, T3 and T4 without help; T2 8 of 9.
+- **Usable and wanted:** SUS 87.8 (target 68); UTAUT2 performance 4.41, ease of use 4.33 and intention 4.48 all met the 4.0 target; social influence was lowest (4.11).
 - **Quality:** popup opens in 1.78 s (< 2 s); Thai headlines now fit one popup line 16 of 16 (was 6 of 50) after we changed the AI prompt; crawls were moved from GitHub's unreliable scheduler to a database timer: the gap between crawls fell from 7.7 h on average to 1.86 h (4 of 4 gaps ≤ 3 h); 10 bugs found and fixed, 0 open.
 - **Compliance:** every API request logged in a tamper-evident chain kept ≥ 90 days; email digest only after verified sign-in and recorded consent; email used for nothing else.
 
@@ -35,7 +35,7 @@ Full numbers with sources: [comparison-table.md](comparison-table.md). AI detail
 
 ## 4. Limits and next steps
 
-- 8 real users in one round (plan: 12 in two rounds); 7 read news mainly in English and 1 in Burmese. Next: a second round with mainly-Thai readers.
-- 4 of 8 users asked for English (and Burmese) headlines — the headlines already exist in all 3 languages; the toggle is the next feature.
+- 9 real users in one round (plan: 12 in two rounds); 8 read news mainly in English and 1 in Burmese. Next: a second round with mainly-Thai readers.
+- 4 of 9 users asked for English (and Burmese) headlines — the headlines already exist in all 3 languages; the toggle is the next feature.
 - Headline accuracy is not yet measured on a labelled sample ([ai-logic.md](ai-logic.md) limits).
 - Pre-launch gaps: users cannot yet export or delete their own data; the log-retention job exists but is not scheduled; the extension's consent text does not yet name Supabase (Seoul) and Gmail (the website's notice does).
