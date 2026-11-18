@@ -3,7 +3,7 @@
 Guide: [interview-guide.md](interview-guide.md). Target: ≥5 by the gate, ≥15 overall.
 IDs only (R1, R2, …) — no names, emails, phone numbers or LINE IDs here (PDPA, rule.md).
 
-Progress: **8 / 5** — all 8 are **post-test interviews** (17 Nov 2026), not DISCOVER problem interviews (target 15)
+Progress: **9 / 5** — all 9 are **post-test interviews** (17 Nov 2026), not DISCOVER problem interviews (target 15)
 
 > **Status (17 Nov 2026): no one-to-one problem interviews were held during DISCOVER.** The guide above was prepared but not run before building. The pains P1–P4 come from (a) a **real-user survey** of 7 readers in Thailand — [../survey-results.md](../survey-results.md) — and (b) **SECONDARY** evidence: 5 Pantip threads and 8 Google Play reviews with links, dates and screenshots — [../research/path-b-user-research.md](../research/path-b-user-research.md).
 >
@@ -19,8 +19,9 @@ Progress: **8 / 5** — all 8 are **post-test interviews** (17 Nov 2026), not DI
 | R6 = U07 | 2026-11-17 | UAT moderator (team) | End of test session (mode not recorded) | not recorded | "I really like to look quicky." · "I want to keep using cuz it's so easy to find new news." | P3, P1 | Reads news rarely | No. Couldn't read the Thai headlines, wanted English |
 | R7 = U08 | 2026-11-17 | UAT moderator (team) | End of test session (mode not recorded) | not recorded | "It is easy but it would be better if you guys do more marketing and putting instructions in the marketing." | — | Reads news daily | Partly: T2 failed with NaraNews and T1 was no faster than the old way; wants a search bar in topic selection |
 | R8 = U09 | 2026-11-17 | UAT moderator (team) | End of test session (mode not recorded) | not recorded | "very appealing" · Keep using: "Yes. It is convenient" · Stuck: "Nowhere" | P3 | Reads news daily | No |
+| R9 = U10 | 2026-11-17 | UAT moderator (team) | End of test session (mode not recorded) | not recorded | Liked: "good" · Keep using: "yes" · Stuck: "at the start" | — | Reads news daily | Partly: T2 slower with NaraNews (99.1 s vs 72.1 s) |
 
-## Summary per pain (8 post-test interviews + survey + SECONDARY)
+## Summary per pain (9 post-test interviews + survey + SECONDARY)
 
 | Pain | Supported by (interviews) | Contradicted by | Verdict |
 |------|---------------------------|-----------------|---------|
